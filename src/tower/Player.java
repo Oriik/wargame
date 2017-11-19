@@ -5,6 +5,8 @@
  */
 package tower;
 
+
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 /**
@@ -12,5 +14,10 @@ import javafx.scene.shape.Circle;
  * @author Guillaume
  */
 class Player extends Circle {
+
+    public Player() {
+        super(5, Color.RED);
+    }
+    
     
 }
