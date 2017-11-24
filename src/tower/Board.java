@@ -5,11 +5,9 @@
  */
 package tower;
 
-import javafx.scene.Node;
-import javafx.scene.input.MouseEvent;
+import java.util.ArrayList;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+
 
 /**
  *
@@ -17,19 +15,28 @@ import javafx.scene.shape.Rectangle;
  */
 public class Board extends GridPane{
     int cpt=0;
-    public void initBoard(Player player, Collectible collectible){
+    public void initBoard(ArrayList<Player> players, Collectible collectible){
         for(int x=0;x<10;x++){
             for(int y=0;y<10;y++){
                               
                  Cell cell = new Cell();
-                 cell.initCell(this,player,collectible);
+                 cell.initCell(this,collectible);
                  this.add(cell, y, x);
             }
         }
         
         Cell temp = (Cell)this.getChildren().get(0);
-        temp.getChildren().add(player);
+        temp.getChildren().add(players.get(0));
         
+        temp = (Cell)this.getChildren().get(1);
+        temp.getChildren().add(players.get(1));
+        
+        temp = (Cell)this.getChildren().get(2);
+        temp.getChildren().add(players.get(2));
+        
+        temp = (Cell)this.getChildren().get(3);
+        temp.getChildren().add(players.get(3));
+
         temp =(Cell)this.getChildren().get(5);
         temp.getChildren().add(collectible);
     }
