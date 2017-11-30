@@ -15,6 +15,7 @@ import javafx.scene.shape.Circle;
  */
 public class Unit extends Circle {
 
+    public int range=4;
     public Unit() {
         super(5, Color.RED);
     }
