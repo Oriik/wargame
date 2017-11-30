@@ -13,9 +13,9 @@ import javafx.scene.shape.Circle;
  *
  * @author Guillaume
  */
-public class Player extends Circle {
+public class Unit extends Circle {
 
-    public Player() {
+    public Unit() {
         super(5, Color.RED);
     }
     

@@ -5,8 +5,6 @@
  */
 package tower;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -21,10 +19,10 @@ import javafx.scene.shape.Rectangle;
 public class Cell extends StackPane {
     
     private static int cpt = 0;
-    public static Player current_player;
+    public static Unit current_player;
     
     
-    public void initCell(Board board, Collectible collectible){
+    public void initCell(Board board){
         
         Rectangle rec = new Rectangle();
         rec.setFill(Color.TRANSPARENT);        
@@ -38,24 +36,27 @@ public class Cell extends StackPane {
               
             //Si un joueur est sélectionné, on le déplace
             if(current_player!=null){
-                
+                 if(this.getChildren().size()>1 && this.getChildren().get(1) instanceof Unit){  
+                     System.out.println("Vous ne pouvez pas vous déplacer sur cette case ! ");
+                 }
+                 else{
                 Cell tem = (Cell)current_player.getParent();                     
-                tem.getChildren().remove(current_player); 
-               
-
-                if(tem.getChildren().remove(collectible)){                      
+                tem.getChildren().remove(current_player);            
+                
+                if(this.getChildren().size()>1 && this.getChildren().get(1) instanceof Collectible){   
+                    this.getChildren().remove(1);
                     cpt++;    
                     System.out.println(cpt);                    
                 }
                  this.getChildren().add(1, current_player);
                 
-                current_player=null;
-                
+                current_player=null; 
+                }
             }
             // Sinon on sélectionne le joueur sous la souris
             else{
-                if(this.getChildren().size()>1 && this.getChildren().get(1) instanceof Player ){
-                current_player = (Player) this.getChildren().get(1);  
+                if(this.getChildren().size()>1 && this.getChildren().get(1) instanceof Unit ){
+                current_player = (Unit) this.getChildren().get(1);  
         
                }
             }

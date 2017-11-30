@@ -15,12 +15,12 @@ import javafx.scene.layout.GridPane;
  */
 public class Board extends GridPane{
     int cpt=0;
-    public void initBoard(ArrayList<Player> players, Collectible collectible){
+    public void initBoard(ArrayList<Unit> players, ArrayList<Collectible> collectibles){
         for(int x=0;x<10;x++){
             for(int y=0;y<10;y++){
                               
                  Cell cell = new Cell();
-                 cell.initCell(this,collectible);
+                 cell.initCell(this);
                  this.add(cell, y, x);
             }
         }
@@ -38,7 +38,7 @@ public class Board extends GridPane{
         temp.getChildren().add(players.get(3));
 
         temp =(Cell)this.getChildren().get(5);
-        temp.getChildren().add(collectible);
+        temp.getChildren().add(collectibles.get(0));
     }
      
  
