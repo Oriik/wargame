@@ -16,8 +16,12 @@ import javafx.scene.shape.Circle;
 public class Unit extends Circle {
 
     public int range=4;
+    public int move = range;
     public Unit() {
         super(5, Color.RED);
+    }
+    public void endOfTurn(){
+        move = range;
     }
     
     

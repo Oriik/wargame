@@ -50,17 +50,13 @@ public class Cell extends StackPane {
                     return;
                 }
 
-                tempCell.getChildren().remove(current_player);
-
                 if (this.getChildren().size() > 1 && this.getChildren().get(1) instanceof Collectible) {
                     this.getChildren().remove(1);
                     PickCollectibleEvent temp = new PickCollectibleEvent(myEventType);
                     this.fireEvent(temp);
                     temp.consume();
                 }
-                this.getChildren().add(1, current_player);
-                current_player = null;
-
+                moveUnit(tempCell);
                 uncolorCells();
 
             } // Sinon on sélectionne le joueur sous la souris
@@ -74,11 +70,15 @@ public class Cell extends StackPane {
 
     }
 
-    private boolean onRange(Cell tempCell) {
+    private double distance(Cell tempCell){
         double a = (tempCell.getLayoutX() - this.getLayoutX()) / 41;
         double b = (tempCell.getLayoutY() - this.getLayoutY()) / 41;
         double c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
-        return (c <= current_player.range);
+        return c;
+    }
+    private boolean onRange(Cell tempCell) {
+        double a = distance(tempCell);
+        return (a <= current_player.move);
     }
 
     private void colorCellOnRange() {
@@ -101,5 +101,12 @@ public class Cell extends StackPane {
                 tempRec.setFill(Color.TRANSPARENT);
             }
         }
+    }
+
+    private void moveUnit(Cell tempCell) {
+        tempCell.getChildren().remove(current_player);
+        this.getChildren().add(1, current_player);
+        current_player.move -= (int)distance(tempCell);
+        current_player = null;
     }
 }

@@ -24,21 +24,21 @@ public class Tower extends Application {
 
         Board board = new Board();
 
-        Unit player1 = new Unit();
-        Unit player2 = new Unit();
-        Unit player3 = new Unit();
-        Unit player4 = new Unit();
-        ArrayList<Unit> players = new ArrayList();
-        players.add(player1);
-        players.add(player2);
-        players.add(player3);
-        players.add(player4);
+        Unit unit1 = new Unit();
+        Unit unit2 = new Unit();
+        Unit unit3 = new Unit();
+        Unit unit4 = new Unit();
+        ArrayList<Unit> units = new ArrayList();
+        units.add(unit1);
+        units.add(unit2);
+        units.add(unit3);
+        units.add(unit4);
         Collectible piece = new Collectible();
         Collectible piece2 = new Collectible();
         ArrayList<Collectible> collectibles = new ArrayList();
         collectibles.add(piece);
         collectibles.add(piece2);
-        board.initBoard(players, collectibles);
+        board.initBoard(units, collectibles);
 
         Scene scene = new Scene(board);
         scene.addEventHandler(EventType.ROOT, new MyEventHandler(board));

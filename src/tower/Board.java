@@ -6,6 +6,9 @@
 package tower;
 
 import java.util.ArrayList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
@@ -18,8 +21,14 @@ public class Board extends GridPane {
     public static int cpt = 0;
     Label labelScore = new Label("Score");
     Label score = new Label(Integer.toString(cpt));
+    Button endOfTurn = new Button("End");
 
-    public void initBoard(ArrayList<Unit> players, ArrayList<Collectible> collectibles) {
+    public void initBoard(ArrayList<Unit> units, ArrayList<Collectible> collectibles) {
+        endOfTurn.setOnAction((ActionEvent e) -> {
+            for(Unit unit : units){
+                unit.endOfTurn();
+            }
+        });
         for (int x = 0; x < 10; x++) {
             for (int y = 0; y < 10; y++) {
 
@@ -31,18 +40,19 @@ public class Board extends GridPane {
 
         this.add(labelScore, 0, 10);
         this.add(score, 1, 10);
+        this.add(endOfTurn, 0, 11);
 
         Cell temp = (Cell) this.getChildren().get(0);
-        temp.getChildren().add(players.get(0));
+        temp.getChildren().add(units.get(0));
 
         temp = (Cell) this.getChildren().get(1);
-        temp.getChildren().add(players.get(1));
+        temp.getChildren().add(units.get(1));
 
         temp = (Cell) this.getChildren().get(2);
-        temp.getChildren().add(players.get(2));
+        temp.getChildren().add(units.get(2));
 
         temp = (Cell) this.getChildren().get(3);
-        temp.getChildren().add(players.get(3));
+        temp.getChildren().add(units.get(3));
 
         temp = (Cell) this.getChildren().get(5);
         temp.getChildren().add(collectibles.get(0));
