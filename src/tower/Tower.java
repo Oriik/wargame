@@ -4,26 +4,26 @@
  * and open the template in the editor.
  */
 package tower;
-    
 
 import java.util.ArrayList;
 import javafx.application.Application;
+import javafx.event.EventType;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  *
  * @author Guillaume
  */
 public class Tower extends Application {
-    
+
     //static Player current_player = new Player();
-    
     @Override
     public void start(Stage primaryStage) {
-        
+
         Board board = new Board();
-               
+
         Unit player1 = new Unit();
         Unit player2 = new Unit();
         Unit player3 = new Unit();
@@ -34,13 +34,17 @@ public class Tower extends Application {
         players.add(player3);
         players.add(player4);
         Collectible piece = new Collectible();
+        Collectible piece2 = new Collectible();
         ArrayList<Collectible> collectibles = new ArrayList();
         collectibles.add(piece);
-        board.initBoard(players,collectibles);
-        
-        Scene scene = new Scene(board, 300, 300);
+        collectibles.add(piece2);
+        board.initBoard(players, collectibles);
+
+        Scene scene = new Scene(board);
+        scene.addEventHandler(EventType.ROOT, new MyEventHandler(board));
         primaryStage.setTitle("Tower");
         primaryStage.setScene(scene);
+        primaryStage.setMaximized(true);
         primaryStage.show();
     }
 
@@ -50,9 +54,5 @@ public class Tower extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
- 
 
-  
-   
 }

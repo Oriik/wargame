@@ -5,12 +5,14 @@
  */
 package tower;
 
-import javafx.scene.Node;
+import tower.Events.PickCollectibleEvent;
+import javafx.event.EventType;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import tower.Events.CellBusyEvent;
+import tower.Events.OutOfRangeEvent;
 
 /**
  *
@@ -18,16 +20,18 @@ import javafx.scene.shape.Rectangle;
  */
 public class Cell extends StackPane {
 
-    private static int cpt = 0;
     public static Unit current_player;
+
+    public static EventType<PickCollectibleEvent> myEventType = new EventType<>("NOIDEAHOWITSWORKING");
+    
 
     public void initCell(Board board) {
 
         Rectangle rec = new Rectangle();
         rec.setFill(Color.TRANSPARENT);
         rec.setStroke(Color.BLACK);
-        rec.setHeight(20);
-        rec.setWidth(20);
+        rec.setHeight(40);
+        rec.setWidth(40);
         this.getChildren().add(rec);
 
         this.setOnMouseClicked((MouseEvent event) -> {
@@ -35,26 +39,27 @@ public class Cell extends StackPane {
             //Si un joueur est sélectionné, on le déplace
             if (current_player != null) {
                 if (this.getChildren().size() > 1 && this.getChildren().get(1) instanceof Unit) {
-                    System.out.println("Vous ne pouvez pas vous déplacer sur cette case ! ");
+                    CellBusyEvent temp = new CellBusyEvent(myEventType);
+                    this.fireEvent(temp);
                     return;
                 }
                 Cell tem = (Cell) current_player.getParent();
-                if(Math.abs(tem.getLayoutX() - this.getLayoutX())/21 > current_player.range 
-                        || Math.abs(tem.getLayoutY() - this.getLayoutY())/21 > current_player.range    ){
-                    System.out.println("La case est hors de votre range ! ");
+                if (Math.abs(tem.getLayoutX() - this.getLayoutX()) / 41 > current_player.range
+                        || Math.abs(tem.getLayoutY() - this.getLayoutY()) / 41 > current_player.range) {
+                    OutOfRangeEvent temp = new OutOfRangeEvent(myEventType);
+                    this.fireEvent(temp);
                     return;
                 }
 
-                
                 tem.getChildren().remove(current_player);
 
                 if (this.getChildren().size() > 1 && this.getChildren().get(1) instanceof Collectible) {
                     this.getChildren().remove(1);
-                    cpt++;
-                    System.out.println(cpt);
+                    PickCollectibleEvent temp = new PickCollectibleEvent(myEventType);
+                    this.fireEvent(temp);
+                    temp.consume();
                 }
                 this.getChildren().add(1, current_player);
-
                 current_player = null;
 
             } // Sinon on sélectionne le joueur sous la souris
@@ -66,14 +71,4 @@ public class Cell extends StackPane {
         });
 
     }
-
-    private Node getNode(Board board, int x, int y) {
-        for (Node node : board.getChildren()) {
-            if (GridPane.getColumnIndex(node) == x && GridPane.getRowIndex(node) == y) {
-                return node;
-            }
-        }
-        return null;
-    }
-
 }
