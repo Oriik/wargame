@@ -7,6 +7,7 @@ package tower;
 
 import tower.Events.PickCollectibleEvent;
 import javafx.event.EventType;
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -23,7 +24,6 @@ public class Cell extends StackPane {
     public static Unit current_player;
 
     public static EventType<PickCollectibleEvent> myEventType = new EventType<>("NOIDEAHOWITSWORKING");
-    
 
     public void initCell(Board board) {
 
@@ -43,15 +43,14 @@ public class Cell extends StackPane {
                     this.fireEvent(temp);
                     return;
                 }
-                Cell tem = (Cell) current_player.getParent();
-                if (Math.abs(tem.getLayoutX() - this.getLayoutX()) / 41 > current_player.range
-                        || Math.abs(tem.getLayoutY() - this.getLayoutY()) / 41 > current_player.range) {
-                    OutOfRangeEvent temp = new OutOfRangeEvent(myEventType);
-                    this.fireEvent(temp);
+                Cell tempCell = (Cell) current_player.getParent();
+                if (!onRange(tempCell)) {
+                    OutOfRangeEvent tempEvent = new OutOfRangeEvent(myEventType);
+                    this.fireEvent(tempEvent);
                     return;
                 }
 
-                tem.getChildren().remove(current_player);
+                tempCell.getChildren().remove(current_player);
 
                 if (this.getChildren().size() > 1 && this.getChildren().get(1) instanceof Collectible) {
                     this.getChildren().remove(1);
@@ -62,13 +61,45 @@ public class Cell extends StackPane {
                 this.getChildren().add(1, current_player);
                 current_player = null;
 
+                uncolorCells();
+
             } // Sinon on sélectionne le joueur sous la souris
             else if (this.getChildren().size() > 1 && this.getChildren().get(1) instanceof Unit) {
                 current_player = (Unit) this.getChildren().get(1);
+                colorCellOnRange();
 
             }
 
         });
 
+    }
+
+    private boolean onRange(Cell tempCell) {
+        double a = (tempCell.getLayoutX() - this.getLayoutX()) / 41;
+        double b = (tempCell.getLayoutY() - this.getLayoutY()) / 41;
+        double c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+        return (c <= current_player.range);
+    }
+
+    private void colorCellOnRange() {
+        Board father = (Board) this.getParent();
+        for (Node children : father.getChildren()) {
+            if (children instanceof Cell) {
+                if (onRange((Cell) children)) {
+                    Rectangle tempRec = (Rectangle) ((Cell) children).getChildren().get(0);
+                    tempRec.setFill(Color.GAINSBORO);
+                }
+            }
+        }
+    }
+
+    private void uncolorCells() {
+        Board father = (Board) this.getParent();
+        for (Node children : father.getChildren()) {
+            if (children instanceof Cell) {
+                Rectangle tempRec = (Rectangle) ((Cell) children).getChildren().get(0);
+                tempRec.setFill(Color.TRANSPARENT);
+            }
+        }
     }
 }

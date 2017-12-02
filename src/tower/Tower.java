@@ -8,9 +8,10 @@ package tower;
 import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.event.EventType;
+import javafx.scene.Cursor;
+import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 /**
  *
@@ -18,7 +19,6 @@ import javafx.stage.StageStyle;
  */
 public class Tower extends Application {
 
-    //static Player current_player = new Player();
     @Override
     public void start(Stage primaryStage) {
 
@@ -46,6 +46,7 @@ public class Tower extends Application {
         primaryStage.setScene(scene);
         primaryStage.setMaximized(true);
         primaryStage.show();
+       
     }
 
     /**

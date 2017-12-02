@@ -6,8 +6,6 @@
 package tower;
 
 import java.util.ArrayList;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
