@@ -8,6 +8,7 @@ package tower;
 import tower.Events.PickCollectibleEvent;
 import javafx.event.EventType;
 import javafx.scene.Node;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -22,7 +23,7 @@ import tower.Events.OutOfRangeEvent;
 public class Cell extends StackPane {
 
     public static Unit current_player;
-
+    private int cellWidth = 20;
     public static EventType<PickCollectibleEvent> myEventType = new EventType<>("NOIDEAHOWITSWORKING");
 
     public void initCell(Board board) {
@@ -30,11 +31,18 @@ public class Cell extends StackPane {
         Rectangle rec = new Rectangle();
         rec.setFill(Color.TRANSPARENT);
         rec.setStroke(Color.BLACK);
-        rec.setHeight(40);
-        rec.setWidth(40);
+        rec.setHeight(cellWidth);
+        rec.setWidth(cellWidth);
         this.getChildren().add(rec);
 
         this.setOnMouseClicked((MouseEvent event) -> {
+            
+            if(event.getButton()==MouseButton.SECONDARY){
+                current_player=null;
+                uncolorCells();
+                return;
+            }
+            
 
             //Si un joueur est sélectionné, on le déplace
             if (current_player != null) {
@@ -67,12 +75,14 @@ public class Cell extends StackPane {
             }
 
         });
+        
+      
 
     }
 
     private double distance(Cell tempCell){
-        double a = (tempCell.getLayoutX() - this.getLayoutX()) / 41;
-        double b = (tempCell.getLayoutY() - this.getLayoutY()) / 41;
+        double a = (tempCell.getLayoutX() - this.getLayoutX()) / (cellWidth+1);
+        double b = (tempCell.getLayoutY() - this.getLayoutY()) /(cellWidth+1);
         double c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
         return c;
     }
@@ -93,7 +103,7 @@ public class Cell extends StackPane {
         }
     }
 
-    private void uncolorCells() {
+    public void uncolorCells() {
         Board father = (Board) this.getParent();
         for (Node children : father.getChildren()) {
             if (children instanceof Cell) {

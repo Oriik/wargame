@@ -22,6 +22,8 @@ public class Unit extends Circle {
     }
     public void endOfTurn(){
         move = range;
+        Cell temp = (Cell)this.getParent();
+        temp.uncolorCells();
     }
     
     

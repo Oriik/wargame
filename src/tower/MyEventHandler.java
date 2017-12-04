@@ -18,17 +18,17 @@ import tower.Events.CellBusyEvent;
  */
 public class MyEventHandler implements EventHandler {
 
-    private final Board board;
+    private final Menu menu;
 
-    public MyEventHandler(Board _board) {
-        board = _board;
+    public MyEventHandler(Menu _menu) {
+        menu = _menu;
     }
 
     @Override
     public void handle(Event event) {
         if (event instanceof PickCollectibleEvent) {
             cpt++;
-            board.refreshScore();
+            menu.refreshScore();
             event.consume();
         }
         if (event instanceof OutOfRangeEvent) {
