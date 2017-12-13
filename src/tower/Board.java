@@ -6,7 +6,11 @@
 package tower;
 
 import java.util.ArrayList;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import static tower.Cell.current_player;
+import static tower.Cell.temp;
+import static tower.Constantes.cellWidth;
 
 /**
  *
@@ -34,6 +38,19 @@ public class Board extends GridPane {
             }
         }
 
+        this.setOnMouseDragged((MouseEvent event) -> {
+
+            int posX = ((int) Math.floor(event.getX() / cellWidth));
+            int posY = ((int) Math.floor(event.getY() / cellWidth) * 50);
+            if (current_player != null) {
+                Cell tempCell = (Cell)this.getChildren().get(posX+posY);
+                if (!temp.contains(tempCell)) {
+                    temp.add(tempCell);
+                }
+
+                        
+            }
+        });
         Cell temp = (Cell) this.getChildren().get(0);
 
         temp.getChildren()

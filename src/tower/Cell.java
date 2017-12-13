@@ -5,16 +5,14 @@
  */
 package tower;
 
-import tower.Events.PickCollectibleEvent;
-import javafx.event.EventType;
+import java.util.ArrayList;
+import java.util.Iterator;
 import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import tower.Events.CellBusyEvent;
-import tower.Events.OutOfRangeEvent;
 
 /**
  *
@@ -22,85 +20,57 @@ import tower.Events.OutOfRangeEvent;
  */
 public class Cell extends StackPane {
 
+    public static ArrayList<Cell> temp = new ArrayList();
     public static Unit current_player;
-    private int cellWidth = 20;
-    public static EventType<PickCollectibleEvent> myEventType = new EventType<>("NOIDEAHOWITSWORKING");
 
     public void initCell(Board board) {
 
         Rectangle rec = new Rectangle();
         rec.setFill(Color.TRANSPARENT);
         rec.setStroke(Color.BLACK);
-        rec.setHeight(cellWidth);
-        rec.setWidth(cellWidth);
+        rec.setHeight(Constantes.cellWidth);
+        rec.setWidth(Constantes.cellWidth);
         this.getChildren().add(rec);
 
-        this.setOnMouseClicked((MouseEvent event) -> {
+        this.setOnMouseReleased((MouseEvent event) -> {
             
-            if(event.getButton()==MouseButton.SECONDARY){
-                current_player=null;
+            if (current_player != null) {
+                Iterator<Cell> it = temp.iterator();
+                while (it.hasNext()) {
+                    current_player.move(it.next());
+                }
+                
+            }
+            temp.clear();
+            uncolorCells();
+
+        });
+
+        this.setOnMousePressed((MouseEvent event) -> {
+
+            if (event.getButton() == MouseButton.SECONDARY) {
+                current_player = null;
                 uncolorCells();
                 return;
             }
-            
+            if (this.getChildren().size() > 1 && this.getChildren().get(1) instanceof Unit) {
+                current_player = (Unit) this.getChildren().get(1);
+                current_player.colorCellOnRange();
+            }
 
             //Si un joueur est sélectionné, on le déplace
-            if (current_player != null) {
-                if (this.getChildren().size() > 1 && this.getChildren().get(1) instanceof Unit) {
-                    CellBusyEvent temp = new CellBusyEvent(myEventType);
-                    this.fireEvent(temp);
-                    return;
-                }
-                Cell tempCell = (Cell) current_player.getParent();
-                if (!onRange(tempCell)) {
-                    OutOfRangeEvent tempEvent = new OutOfRangeEvent(myEventType);
-                    this.fireEvent(tempEvent);
-                    return;
-                }
-
-                if (this.getChildren().size() > 1 && this.getChildren().get(1) instanceof Collectible) {
-                    this.getChildren().remove(1);
-                    PickCollectibleEvent temp = new PickCollectibleEvent(myEventType);
-                    this.fireEvent(temp);
-                    temp.consume();
-                }
-                moveUnit(tempCell);
+            /*if (current_player != null) {
+                current_player.move(this);
+                current_player = null;
                 uncolorCells();
 
             } // Sinon on sélectionne le joueur sous la souris
             else if (this.getChildren().size() > 1 && this.getChildren().get(1) instanceof Unit) {
                 current_player = (Unit) this.getChildren().get(1);
-                colorCellOnRange();
-
-            }
-
+                current_player.colorCellOnRange();
+            }*/
         });
-        
-      
 
-    }
-
-    private double distance(Cell tempCell){
-        double a = (tempCell.getLayoutX() - this.getLayoutX()) / (cellWidth+1);
-        double b = (tempCell.getLayoutY() - this.getLayoutY()) /(cellWidth+1);
-        double c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
-        return c;
-    }
-    private boolean onRange(Cell tempCell) {
-        double a = distance(tempCell);
-        return (a <= current_player.move);
-    }
-
-    private void colorCellOnRange() {
-        Board father = (Board) this.getParent();
-        for (Node children : father.getChildren()) {
-            if (children instanceof Cell) {
-                if (onRange((Cell) children)) {
-                    Rectangle tempRec = (Rectangle) ((Cell) children).getChildren().get(0);
-                    tempRec.setFill(Color.GAINSBORO);
-                }
-            }
-        }
     }
 
     public void uncolorCells() {
@@ -113,10 +83,7 @@ public class Cell extends StackPane {
         }
     }
 
-    private void moveUnit(Cell tempCell) {
-        tempCell.getChildren().remove(current_player);
-        this.getChildren().add(1, current_player);
-        current_player.move -= (int)distance(tempCell);
-        current_player = null;
+    public Node get(int i) {
+        return this.getChildren().get(i);
     }
 }
