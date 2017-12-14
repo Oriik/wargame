@@ -5,9 +5,7 @@
  */
 package tower;
 
-import java.util.ArrayList;
 import javafx.scene.Node;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -20,14 +18,15 @@ import static tower.Constantes.myEventType;
  *
  * @author Guillaume
  */
-public class Unit extends Circle {
+  abstract public class Unit extends Circle {
 
-    
-    public int range = 4;
-    public int move = range;
+    public int range;
+    public int move;
 
-    public Unit() {
+    public Unit(int _range, int _move) {
         super(5, Color.RED);
+        this.move = _move;
+        this.range = _range;
     }
 
     public void endOfTurn() {
@@ -36,8 +35,7 @@ public class Unit extends Circle {
         temp.uncolorCells();
     }
 
-    
-    void move(Cell dest) {
+    public void move(Cell dest) {
 
         if (dest.getChildren().size() > 1 && dest.getChildren().get(1) instanceof Unit) {
             CellBusyEvent temp = new CellBusyEvent(myEventType);
@@ -61,12 +59,12 @@ public class Unit extends Circle {
         this.move -= (int) distance(tempCell);
     }
 
-    private boolean onRange(Cell tempCell) {
+    public boolean onRange(Cell tempCell) {
         double a = distance(tempCell);
         return (a <= this.move);
     }
 
-    private double distance(Cell tempCell) {
+    public double distance(Cell tempCell) {
         double a = Math.abs((tempCell.getLayoutX() - this.getParent().getLayoutX()) / (Constantes.cellWidth + 1));
         double b = Math.abs((tempCell.getLayoutY() - this.getParent().getLayoutY()) / (Constantes.cellWidth + 1));
         return a + b;
@@ -78,7 +76,7 @@ public class Unit extends Circle {
             if (children instanceof Cell) {
                 if (onRange((Cell) children)) {
                     Rectangle tempRec = (Rectangle) ((Cell) children).get(0);
-                    tempRec.setFill(Color.GREEN);
+                    tempRec.setFill(Color.LIGHTGRAY);
                 }
             }
         }

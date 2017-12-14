@@ -21,7 +21,7 @@ import javafx.scene.shape.Rectangle;
 public class Cell extends StackPane {
 
     public static ArrayList<Cell> temp = new ArrayList();
-    public static Unit current_player;
+    public static Unit current_unit;
 
     public void initCell(Board board) {
 
@@ -33,13 +33,13 @@ public class Cell extends StackPane {
         this.getChildren().add(rec);
 
         this.setOnMouseReleased((MouseEvent event) -> {
-            
-            if (current_player != null) {
+
+            if (current_unit != null) {
                 Iterator<Cell> it = temp.iterator();
                 while (it.hasNext()) {
-                    current_player.move(it.next());
+                    current_unit.move(it.next());
                 }
-                
+
             }
             temp.clear();
             uncolorCells();
@@ -49,28 +49,15 @@ public class Cell extends StackPane {
         this.setOnMousePressed((MouseEvent event) -> {
 
             if (event.getButton() == MouseButton.SECONDARY) {
-                current_player = null;
+                current_unit = null;
                 uncolorCells();
                 return;
             }
             if (this.getChildren().size() > 1 && this.getChildren().get(1) instanceof Unit) {
-                current_player = (Unit) this.getChildren().get(1);
-                current_player.colorCellOnRange();
-            }
-
-            //Si un joueur est sélectionné, on le déplace
-            /*if (current_player != null) {
-                current_player.move(this);
-                current_player = null;
-                uncolorCells();
-
-            } // Sinon on sélectionne le joueur sous la souris
-            else if (this.getChildren().size() > 1 && this.getChildren().get(1) instanceof Unit) {
-                current_player = (Unit) this.getChildren().get(1);
-                current_player.colorCellOnRange();
-            }*/
+                current_unit = (Unit) this.getChildren().get(1);
+                current_unit.colorCellOnRange();
+            }       
         });
-
     }
 
     public void uncolorCells() {
@@ -81,6 +68,10 @@ public class Cell extends StackPane {
                 tempRec.setFill(Color.TRANSPARENT);
             }
         }
+    }
+
+    public void color(Color color) {
+        ((Rectangle) this.getChildren().get(0)).setFill(color);
     }
 
     public Node get(int i) {

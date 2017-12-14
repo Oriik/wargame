@@ -22,7 +22,7 @@ public class Menu extends GridPane {
         board = _board;
     }
 
-     Label labelScore = new Label("Score");
+    Label labelScore = new Label("Score");
     Label score = new Label(Integer.toString(cpt));
     Button endOfTurn = new Button("Fin du tour");
     

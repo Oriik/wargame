@@ -8,6 +8,7 @@ package tower;
 import java.util.ArrayList;
 import javafx.event.EventType;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 
 /**
  *
@@ -16,21 +17,17 @@ import javafx.scene.layout.GridPane;
 public class Game extends GridPane {
 
     public void initGame() {
-        Unit unit1 = new Unit();
-        Unit unit2 = new Unit();
-        Unit unit3 = new Unit();
-        Unit unit4 = new Unit();
-        ArrayList<Unit> units = new ArrayList();
-        units.add(unit1);
-        units.add(unit2);
-        units.add(unit3);
-        units.add(unit4);
+        ArrayList<Player> players = new ArrayList();
+        Player player1 = new Player(Color.RED,"Oriik");
+        Grunt unit1 = new Grunt();
+        player1.addUnit(unit1);
+        players.add(player1);
         Collectible piece = new Collectible();
         Collectible piece2 = new Collectible();
         ArrayList<Collectible> collectibles = new ArrayList();
         collectibles.add(piece);
         collectibles.add(piece2);
-        Board board = new Board(units, collectibles);
+        Board board = new Board(players, collectibles);
         board.initialize();
         Menu menu = new Menu(board);
         menu.initMenu();

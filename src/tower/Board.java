@@ -6,11 +6,14 @@
 package tower;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Random;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import static tower.Cell.current_player;
+import javafx.scene.paint.Color;
 import static tower.Cell.temp;
 import static tower.Constantes.cellWidth;
+import static tower.Cell.current_unit;
 
 /**
  *
@@ -19,16 +22,17 @@ import static tower.Constantes.cellWidth;
 public class Board extends GridPane {
 
     public static int cpt = 0;
-    private ArrayList<Unit> units;
-    private ArrayList<Collectible> collectibles;
+    private final ArrayList<Player> players;
+    private final ArrayList<Collectible> collectibles;
 
-    public Board(ArrayList<Unit> _units, ArrayList<Collectible> _collectibles) {
-        this.units = _units;
+    public Board(ArrayList<Player> _players, ArrayList<Collectible> _collectibles) {
+        this.players = _players;
         this.collectibles = _collectibles;
 
     }
 
     public void initialize() {
+
         for (int x = 0; x < 33; x++) {
             for (int y = 0; y < 50; y++) {
 
@@ -40,53 +44,40 @@ public class Board extends GridPane {
 
         this.setOnMouseDragged((MouseEvent event) -> {
 
-            int posX = ((int) Math.floor(event.getX() / cellWidth));
-            int posY = ((int) Math.floor(event.getY() / cellWidth) * 50);
-            if (current_player != null) {
-                Cell tempCell = (Cell)this.getChildren().get(posX+posY);
-                if (!temp.contains(tempCell)) {
-                    temp.add(tempCell);
+            int posX = ((int) Math.floor(event.getX() / (cellWidth + 1)));
+            int posY = ((int) Math.floor(event.getY() / (cellWidth + 1)) * 50);
+            if (current_unit != null) {
+                if (temp.size() < current_unit.move) {
+                    Cell tempCell = (Cell) this.getChildren().get(posX + posY);
+                    if (!temp.contains(tempCell) && !tempCell.getChildren().contains(current_unit)) {
+                        if (current_unit.onRange(tempCell)) {
+                            tempCell.color(Color.DARKGRAY);
+                        }
+                        temp.add(tempCell);
+                    }
                 }
 
-                        
             }
         });
-        Cell temp = (Cell) this.getChildren().get(0);
 
-        temp.getChildren()
-                .add(units.get(0));
+        Random r = new Random();
+        
+        for (Collectible collectible : collectibles) {
+            Cell temp = (Cell) this.getChildren().get(r.nextInt(1650));
+            temp.getChildren().add(collectible);
+        }
 
-        temp = (Cell) this.getChildren().get(1);
-
-        temp.getChildren()
-                .add(units.get(1));
-
-        temp = (Cell) this.getChildren().get(2);
-
-        temp.getChildren()
-                .add(units.get(2));
-
-        temp = (Cell) this.getChildren().get(3);
-
-        temp.getChildren()
-                .add(units.get(3));
-
-        temp = (Cell) this.getChildren().get(5);
-
-        temp.getChildren()
-                .add(collectibles.get(0));
-
-        temp = (Cell) this.getChildren().get(10);
-
-        temp.getChildren()
-                .add(collectibles.get(1));
+        for(Player player : players){
+            for(Unit unit : player.getUnits()){
+            Cell temp = (Cell) this.getChildren().get(r.nextInt(1650));
+            temp.getChildren().add(unit);
+            }
+            
+        }
 
     }
 
     public void endTurn() {
-        for (Unit unit : units) {
-            unit.endOfTurn();
-            Cell.current_player = null;
-        }
+
     }
 }
