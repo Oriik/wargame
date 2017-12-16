@@ -13,29 +13,72 @@ import javafx.scene.paint.Color;
  * @author Guillaume
  */
 public class Player {
-    
+
+    Board board;
+
     public Color playerColor;
-    public String name;
-    public int score=0;
-    public ArrayList<Unit> units ;
+    private String name;
+    private int score = 0;
+    private ArrayList<Unit> units;
 
-    
-
-    public Player(Color _playerColor, String _name) {
-        this.playerColor = _playerColor;
+    //Constructeur
+    public Player(String _name) {
         this.name = _name;
         units = new ArrayList();
     }
-    
+
+    //On augmente le score de la valeur entrée
+    public void increaseScore(int by) {
+        score += by;
+    }
+
+    //On attribue la bonne couleur au joueur
+    public void setColorFromString(String color) {
+        switch (color) {
+            case "Bleu":
+                playerColor = Color.BLUE;
+                break;
+            case "Rouge":
+                playerColor = Color.RED;
+                break;
+            case "Vert":
+                playerColor = Color.GREEN;
+                break;
+            case "Violet":
+                playerColor = Color.PURPLE;
+                break;
+            case "Noir":
+                playerColor = Color.BLACK;
+                break;
+            case "Jaune":
+                playerColor = Color.YELLOW;
+                break;
+            default:
+                playerColor = Color.ALICEBLUE;
+                break;
+        }
+    }
+
+    //Ajouter un grunt dans la liste des unités du joueur
+    public void addGrunt() {
+        units.add(new Grunt(playerColor));
+    }
+
+    //Getters et Setters
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public ArrayList<Unit> getUnits() {
         return units;
     }
 
-    public void addUnit(Unit unit) {
-        units.add(unit);
+    public int getScore() {
+        return score;
     }
 
-    
-    
 }

@@ -6,70 +6,81 @@
 package tower;
 
 import javafx.scene.Node;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import tower.Events.CellBusyEvent;
 import tower.Events.OutOfRangeEvent;
 import tower.Events.PickCollectibleEvent;
-import static tower.Constantes.myEventType;
 
 /**
  *
  * @author Guillaume
  */
   abstract public class Unit extends Circle {
-
+      
+    public int moveMax;
     public int range;
     public int move;
+    public Image img;
 
-    public Unit(int _range, int _move) {
-        super(5, Color.RED);
-        this.move = _move;
+    //Constructeur
+    public Unit(int _range, int _moveMax, Color color) {
+        super(5,color);
+        this.setStroke(Color.BLACK);
+        this.moveMax = _moveMax;
         this.range = _range;
+        move=moveMax;
     }
 
-    public void endOfTurn() {
-        move = range;
-        Cell temp = (Cell) this.getParent();
-        temp.uncolorCells();
+    //Réinitialise le nombre de mouvement possible
+    public void newTurn() {
+        move = moveMax;       
     }
 
+    //Déplace l'unité surla case destination
     public void move(Cell dest) {
 
+        //On vérifie si la case destination est occupée
         if (dest.getChildren().size() > 1 && dest.getChildren().get(1) instanceof Unit) {
-            CellBusyEvent temp = new CellBusyEvent(myEventType);
+            CellBusyEvent temp = new CellBusyEvent();
             this.fireEvent(temp);
             return;
         }
         Cell tempCell = (Cell) this.getParent();
+        //On vérifie si la case destination est à portée
         if (!onRange(dest)) {
-            OutOfRangeEvent tempEvent = new OutOfRangeEvent(myEventType);
+            OutOfRangeEvent tempEvent = new OutOfRangeEvent();
             this.fireEvent(tempEvent);
             return;
         }
-
+        //On vérifie si un collectible est sur la case destination et on le ramasse
         if (dest.getChildren().size() > 1 && dest.get(1) instanceof Collectible) {
             dest.getChildren().remove(1);
-            PickCollectibleEvent temp = new PickCollectibleEvent(myEventType);
+            PickCollectibleEvent temp = new PickCollectibleEvent();
             this.fireEvent(temp);
             temp.consume();
         }
+        //On déplace l'unité et on réduit le compteur de mouvement de la distance
         dest.getChildren().add(1, this);
         this.move -= (int) distance(tempCell);
     }
 
+    //Vérifie si la case tempCell est à portée de l'unité
     public boolean onRange(Cell tempCell) {
         double a = distance(tempCell);
         return (a <= this.move);
     }
 
+    //Calcule la distance entre l'unité et la case tempCell
     public double distance(Cell tempCell) {
         double a = Math.abs((tempCell.getLayoutX() - this.getParent().getLayoutX()) / (Constantes.cellWidth + 1));
         double b = Math.abs((tempCell.getLayoutY() - this.getParent().getLayoutY()) / (Constantes.cellWidth + 1));
         return a + b;
     }
 
+    //Colore les cases a portée de l'unité
     public void colorCellOnRange() {
         Board father = (Board) this.getParent().getParent();
         for (Node children : father.getChildren()) {

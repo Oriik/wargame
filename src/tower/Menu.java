@@ -8,8 +8,9 @@ package tower;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import static tower.Board.cpt;
 
 /**
  *
@@ -17,28 +18,47 @@ import static tower.Board.cpt;
  */
 public class Menu extends GridPane {
 
-    private final Board board;
-    public Menu(Board _board) {
-        board = _board;
+    public Label labelScore;
+    public Label score;
+    public Label labelCurrentPlayer;
+    public Label currentPlayer;
+    public Button endOfTurn;
+    public Image image;
+    public ImageView imv = new ImageView();
+
+    /*Menu sur la droite de l'écran de jeu, affiche le nom du joueur en cours,
+    son score, l'image de l'unité sélectionnée et le bouton fin de tour*/
+    public Menu() {
+        this.score = new Label(Integer.toString(0));
+        this.endOfTurn = new Button("Fin du tour");
+        this.labelScore = new Label("Score");
+        this.labelCurrentPlayer = new Label("En train de jouer : ");
+        this.currentPlayer = new Label("");
     }
 
-    Label labelScore = new Label("Score");
-    Label score = new Label(Integer.toString(cpt));
-    Button endOfTurn = new Button("Fin du tour");
-    
-    public void initMenu(){
-        this.add(labelScore,0,0);
-        this.add(score,1,0);
-        this.add(endOfTurn,0,2);
+     /*
+    Fonction d'initialisation
+    Utile car certaines fonctions lèvent des Warnings si utilisées dans le constructeur 
+     */
+    public void initMenu() {
+        this.add(labelScore, 0, 1);
+        this.add(score, 1, 1);
+        this.add(endOfTurn, 0, 0);
+        this.add(labelCurrentPlayer, 0, 2);
+        this.add(currentPlayer, 1, 2);
+        imv.setFitWidth(150);
+        imv.setFitHeight(200);
+        this.add(imv, 0, 3);
+
         endOfTurn.setOnAction((ActionEvent e) -> {
-           board.endTurn();
+            ((Game) this.getParent()).newTurn();
         });
     }
-    
-    public void refreshScore() {
+
+    public void refreshScore(int _score) {
         this.getChildren().remove(score);
-        score = new Label(Integer.toString(cpt));
-        this.add(score, 1, 0);
+        score = new Label(Integer.toString(_score));
+        this.add(score, 1, 1);
     }
 
 }

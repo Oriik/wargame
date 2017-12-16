@@ -6,7 +6,7 @@
 package tower.Events;
 
 import javafx.event.Event;
-import javafx.event.EventType;
+import static tower.Constantes.myEventType;
 
 /**
  *
@@ -14,8 +14,9 @@ import javafx.event.EventType;
  */
 public class OutOfRangeEvent extends Event{
     
-    public OutOfRangeEvent(EventType<? extends Event> eventType) {
-        super(eventType);
+    public OutOfRangeEvent() {
+        super(myEventType);
     }
+
     
 }

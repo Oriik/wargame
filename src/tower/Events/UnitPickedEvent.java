@@ -12,12 +12,10 @@ import static tower.Constantes.myEventType;
  *
  * @author Guillaume
  */
-public class PickCollectibleEvent extends Event {
+public class UnitPickedEvent extends Event {
     
-    public PickCollectibleEvent() {
+    public UnitPickedEvent() {
         super(myEventType);
     }
-
-
     
 }

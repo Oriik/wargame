@@ -5,15 +5,20 @@
  */
 package tower;
 
+import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+
 /**
  *
  * @author Guillaume
  */
 public class Grunt extends Unit {
    
+
     
-    public Grunt() {
-        super(1, 4);
+    public Grunt(Color color) {
+        super(1, 4, color);
+        this.img = new Image(getClass().getResource("Grunt.jpg").toString());
     }
     
 }

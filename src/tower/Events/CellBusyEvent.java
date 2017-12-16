@@ -6,7 +6,7 @@
 package tower.Events;
 
 import javafx.event.Event;
-import javafx.event.EventType;
+import static tower.Constantes.myEventType;
 
 /**
  *
@@ -14,8 +14,8 @@ import javafx.event.EventType;
  */
 public class CellBusyEvent extends Event{
     
-    public CellBusyEvent(EventType<? extends Event> eventType) {
-        super(eventType);
+    public CellBusyEvent() {
+        super(myEventType);
     }
     
 }
