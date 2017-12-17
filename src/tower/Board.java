@@ -21,15 +21,11 @@ import tower.Events.PlayerChangedEvent;
  * @author Guillaume
  */
 public class Board extends GridPane {
-    
 
     private final ArrayList<Player> players; //Liste des joueurs
     private final ArrayList<Collectible> collectibles; //Liste des objets à ramasser
     private Player current_player; //Joueur en train de joueur
     private int playerCpt; //Compteur utiliser pour changer de joueur à la fin du tour
-    int v; //Hauteur du tableau
-    int w; //largeur du tableau
-    public int z; //nombre de case du tableau
 
     //Constructeur
     public Board(ArrayList<Player> _players, ArrayList<Collectible> _collectibles) {
@@ -45,12 +41,9 @@ public class Board extends GridPane {
      */
     public void initialize() {
 
-        ///On créé un tableau de w*v case (Cell)
-        v = 20; 
-        w = 20;
-        z = v*w; //nombre de case du tableau
-        for (int x = 0; x < v; x++) {
-            for (int y = 0; y < w; y++) {
+        ///On créé un tableau de 50x33 case (Cell)
+        for (int x = 0; x < 33; x++) {
+            for (int y = 0; y < 50; y++) {
 
                 Cell cell = new Cell(this);
                 cell.initCell();
@@ -85,7 +78,7 @@ public class Board extends GridPane {
         Random r = new Random();
 
         for (Collectible collectible : collectibles) {
-            Cell temp = (Cell) this.getChildren().get(r.nextInt(z));
+            Cell temp = (Cell) this.getChildren().get(r.nextInt(1650));
             temp.getChildren().add(collectible);
         }
 
@@ -116,7 +109,7 @@ public class Board extends GridPane {
         Random r = new Random();
         Cell temp;
         do {
-            temp = (Cell) this.getChildren().get(r.nextInt(z));
+            temp = (Cell) this.getChildren().get(r.nextInt(1650));
         } while (temp.getChildren().size() > 1);
         temp.getChildren().add(unit);
 
