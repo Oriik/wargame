@@ -7,10 +7,15 @@ package tower;
 
 import java.util.ArrayList;
 import java.util.Random;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import static javafx.scene.paint.Color.GREEN;
 import javafx.scene.shape.Rectangle;
 import static tower.Cell.temp;
 import static tower.Constantes.cellWidth;
@@ -47,6 +52,15 @@ public class Board extends GridPane {
 
                 Cell cell = new Cell(this);
                 cell.initCell();
+                if(x==0||y==0||y==49||x==32){ //entoure l'arène d'une couleur
+                    cell.setBackground(new Background(new BackgroundFill(Color.BROWN, CornerRadii.EMPTY, Insets.EMPTY)));
+                }
+                else if(x==16&&y==25){ //ajout de la tour
+                    cell.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+                }else{ //ajout de l'herbe
+                    cell.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
+                }
+                
                 this.add(cell, y, x);
             }
         }
@@ -81,7 +95,7 @@ public class Board extends GridPane {
             Cell temp = (Cell) this.getChildren().get(r.nextInt(1650));
             temp.getChildren().add(collectible);
         }
-
+        
     }
 
     //Lors d'un nouveau tour, on change de joueur et on réinitialise les unités
@@ -141,5 +155,4 @@ public class Board extends GridPane {
     public Unit getCurrent_unit() {
         return current_unit;
     }
-
 }
