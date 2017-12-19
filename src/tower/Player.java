@@ -63,6 +63,22 @@ public class Player {
     public void addGrunt() {
         units.add(new Grunt(playerColor));
     }
+    
+    public void addChevaucheur() {
+        units.add(new Chevaucheurdeloup(playerColor));
+    }
+
+    public void addChasseur() {
+        units.add(new Chasseurtroll(playerColor));
+    }
+
+    public void addFantassin() {
+        units.add(new Fantassin(playerColor));
+    }
+
+    public void addChevalier() {
+        units.add(new Chevalier(playerColor));
+    }
 
     //Getters et Setters
     public String getName() {
