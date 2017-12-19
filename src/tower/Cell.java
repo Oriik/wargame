@@ -89,61 +89,46 @@ public class Cell extends StackPane {
 
                             Optional<ButtonType> result = alert.showAndWait();
                             if (result.get() == ButtonType.OK) {
-                                board.getCurrent_unit().attack((Unit) it.next().getChildren().get(1));
+                                    board.getCurrent_unit().attack((Unit) it.next().getChildren().get(1)); 
                             } else {
                                 return;
                             }
-                        }
-                    }
 
-                }
-                /*while (it.hasNext()) {
-                    Cell tem = it.next();
-                    if (tem.getChildren().size() > 1 && tem.getChildren().get(1) instanceof Unit
-                            && board.getCurrent_unit().onAttackRange(tem)) {
-
-                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                        alert.setTitle("ENNEMI EN VU !");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Un ennemi est à portée, voulez-vous les attaquer ?");
-
-                        Optional<ButtonType> result = alert.showAndWait();
-                        if (result.get() == ButtonType.OK) {
-                            board.getCurrent_unit().attack((Unit) tem.get(1));
-                        } else {
-                            return;
                         }
                     }
                 }
-                it = temp.iterator();*/
             }
+
             //On réinitilise temp et on décolore les cases
             temp.clear();
             board.uncolorCells();
 
-        });//Fin setOnMouseReleased
+        }
+        );//Fin setOnMouseReleased
 
         //On gère l'action quand le joueur click
-        this.setOnMousePressed((MouseEvent event) -> {
+        this.setOnMousePressed(
+                (MouseEvent event) -> {
 
-            //Si il clique sur le bouton droit, on désélectionne l'unité
-            if (event.getButton() == MouseButton.SECONDARY) {
-                board.setCurrent_unit(null);
-                board.uncolorCells();
-                return;
-            }
-            //Si il clique sur une unité, on la sélectionne, et on colore les cases dans sa range de déplacement
-            if (this.getChildren().size() > 1 && this.getChildren().get(1) instanceof Unit) {
-                if (board.getCurrent_player().getUnits().contains((Unit) this.getChildren().get(1))) {
-                    board.setCurrent_unit((Unit) this.getChildren().get(1));
-                    if (board.getCurrent_player().modeAttack) {
-                        board.getCurrent_unit().colorCellOnAttackRange();
-                    } else {
-                        board.getCurrent_unit().colorCellOnMoveRange();
+                    //Si il clique sur le bouton droit, on désélectionne l'unité
+                    if (event.getButton() == MouseButton.SECONDARY) {
+                        board.setCurrent_unit(null);
+                        board.uncolorCells();
+                        return;
+                    }
+                    //Si il clique sur une unité, on la sélectionne, et on colore les cases dans sa range de déplacement
+                    if (this.getChildren().size() > 1 && this.getChildren().get(1) instanceof Unit) {
+                        if (board.getCurrent_player().getUnits().contains((Unit) this.getChildren().get(1))) {
+                            board.setCurrent_unit((Unit) this.getChildren().get(1));
+                            if (board.getCurrent_player().modeAttack) {
+                                board.getCurrent_unit().colorCellOnAttackRange();
+                            } else {
+                                board.getCurrent_unit().colorCellOnMoveRange();
+                            }
+                        }
                     }
                 }
-            }
-        });
+        );
     }
 
     //Permet de colorer la case

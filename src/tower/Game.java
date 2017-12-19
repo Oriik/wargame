@@ -8,11 +8,9 @@ package tower;
 import java.util.ArrayList;
 import javafx.event.EventType;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Screen;
 import static tower.Constantes.boardHeight;
 import static tower.Constantes.boardWidth;
@@ -27,7 +25,6 @@ public class Game extends BorderPane {
     public Board board;
     public Menu menu;
     public ArrayList<Player> players;
-    public ArrayList<Collectible> collectibles;
     public ScrollPane scroll;
     public InventoryPane inventory;
 
@@ -42,12 +39,7 @@ public class Game extends BorderPane {
         Player player2 = new Player("Joueur 2", "orc");
         players.add(player1);
         players.add(player2);
-        collectibles = new ArrayList();
-        for (int i = 0; i < boardWidth; i++) {
-            collectibles.add(new Collectible());
-        }
-
-        board = new Board(players, collectibles);
+        board = new Board(players);
         board.initialize();
         menu = new Menu();
         menu.initMenu();
@@ -66,8 +58,6 @@ public class Game extends BorderPane {
         this.setCenter(scroll);
         this.setRight(menu);
 
-        //Tous les évènements seront géré par une instance de la classe MyEventHandler
-        this.addEventHandler(EventType.ROOT, new MyEventHandler(menu, board));
     }
 
     //Bouge le ScrollPane sur l'unité sélectionné
@@ -101,6 +91,8 @@ public class Game extends BorderPane {
         players.get(1).addWarrior();
         players.get(1).addBowman();
         players.get(1).addHorseman();
+        ((Cell) board.getChildren().get(0)).getChildren().add(new Castle("human"));
+        ((Cell) board.getChildren().get(boardWidth * boardHeight - 1)).getChildren().add(new Castle("orc"));
         board.addUnitOnBoard(players.get(0).getUnits().get(0));
         board.addUnitOnBoard(players.get(1).getUnits().get(0));
         board.addUnitOnBoard(players.get(0).getUnits().get(1));

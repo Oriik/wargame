@@ -3,21 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tower.Events;
-
-import javafx.event.Event;
-import static tower.Constantes.myEventType;
+package tower;
 
 /**
  *
  * @author Guillaume
  */
-public class PickCollectibleEvent extends Event {
+public class Castle extends Building{
     
-    public PickCollectibleEvent() {
-        super(myEventType);
+    public Castle(String faction) {
+        super(faction,"castle.png", "castleDestroy.png");
     }
-
-
     
 }

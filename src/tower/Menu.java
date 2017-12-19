@@ -16,8 +16,6 @@ import javafx.scene.layout.GridPane;
  */
 public class Menu extends GridPane {
 
-    public Label labelScore;
-    public Label score;
     public Label labelCurrentPlayer;
     public Label currentPlayer;
     public Button endOfTurn;
@@ -31,9 +29,7 @@ public class Menu extends GridPane {
     /*Menu sur la droite de l'écran de jeu, affiche le nom du joueur en cours,
     son score, l'image de l'unité sélectionnée et le bouton fin de tour*/
     public Menu() {
-        this.score = new Label(Integer.toString(0));
         this.endOfTurn = new Button("Fin du tour");
-        this.labelScore = new Label("Score");
         this.labelCurrentPlayer = new Label("En train de jouer : ");
         this.currentPlayer = new Label("");
         this.addUnit = new Button("Achat Unité");
@@ -55,8 +51,6 @@ public class Menu extends GridPane {
     Utile car certaines fonctions lèvent des Warnings si utilisées dans le constructeur 
      */
     public void initMenu() {
-        this.add(labelScore, 0, 1);
-        this.add(score, 1, 1);
         this.add(endOfTurn, 0, 0);
         this.add(labelCurrentPlayer, 0, 2);
         this.add(currentPlayer, 1, 2);
@@ -64,19 +58,13 @@ public class Menu extends GridPane {
 
     }
 
-    public void refreshScore(int _score) {
-        this.getChildren().remove(score);
-        score = new Label(Integer.toString(_score));
-        this.add(score, 1, 1);
-    }
+
 
     public void newTurn(Player current_player) {
         this.getChildren().clear();
         this.initMenu();
         this.current_player = current_player;
-        refreshScore(current_player.getScore());
         currentPlayer.setText(current_player.getName());
-        refreshScore(current_player.getScore());
         //On affiche les unités possédées par le joueur courant
         int x = 0, y = 5;
         for (Unit unit : current_player.getUnits()) {

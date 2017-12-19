@@ -14,15 +14,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import static tower.Constantes.cellWidth;
-import tower.Events.CellBusyEvent;
-import tower.Events.OutOfRangeEvent;
-import tower.Events.PickCollectibleEvent;
 
 /**
  *
  * @author Guillaume
  */
-abstract public class Unit extends Rectangle {
+ public abstract class Unit extends Rectangle {
 
     public int moveMax;
     public int range;
@@ -37,6 +34,7 @@ abstract public class Unit extends Rectangle {
         super(cellWidth, cellWidth);
         Image image = new Image(getClass().getResource(_faction + "/" + imgPath).toString());
         this.setFill(new ImagePattern(image));
+        System.out.println(_faction + "/" + imgPath);
         this.moveMax = _moveMax;
         this.range = _range;
         move = moveMax;
@@ -49,42 +47,20 @@ abstract public class Unit extends Rectangle {
     //Réinitialise le nombre de mouvement possible
     public void newTurn() {
         move = moveMax;
-        alreadyAttack=false;
+        alreadyAttack = false;
     }
 
     //Déplace l'unité surla case destination
     public void move(Cell dest) {
 
         //On vérifie si la case destination est occupée
-        if (dest.getChildren().size() > 1 && dest.getChildren().get(1) instanceof Unit) {
-            /* Alert alert = new Alert(AlertType.CONFIRMATION);
-            alert.setTitle("ENNEMI EN VU !");
-            alert.setHeaderText(null);
-            alert.setContentText("Un ennemi nous barre la route, voulez-vous les attaquer ?");
-
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK) {
-                this.attack((Unit) dest.getChildren().get(1));
-            } else {
-                return;
-            }*/
-            CellBusyEvent temp = new CellBusyEvent();
-            this.fireEvent(temp);
+        if (dest.getChildren().size() > 1) {  
             return;
         }
         Cell tempCell = (Cell) this.getParent();
         //On vérifie si la case destination est à portée
         if (!onMoveRange(dest)) {
-            OutOfRangeEvent tempEvent = new OutOfRangeEvent();
-            this.fireEvent(tempEvent);
             return;
-        }
-        //On vérifie si un collectible est sur la case destination et on le ramasse
-        if (dest.getChildren().size() > 1 && dest.get(1) instanceof Collectible) {
-            dest.getChildren().remove(1);
-            PickCollectibleEvent temp = new PickCollectibleEvent();
-            this.fireEvent(temp);
-            temp.consume();
         }
         //On déplace l'unité et on réduit le compteur de mouvement de la distance
         dest.getChildren().add(1, this);
@@ -156,14 +132,14 @@ abstract public class Unit extends Rectangle {
         }
     }
 
-    private void isAttacked(int damage) {
+    protected void isAttacked(int damage) {
         health -= damage;
         if (!isAlive()) {
             ((Cell) this.getParent()).getChildren().remove(this);
         }
     }
 
-    private boolean isAlive() {
+    protected boolean isAlive() {
         return (health > 0);
     }
 

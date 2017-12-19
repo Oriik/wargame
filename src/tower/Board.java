@@ -24,14 +24,12 @@ import static tower.Constantes.cellWidth;
 public class Board extends GridPane {
 
     private final ArrayList<Player> players; //Liste des joueurs
-    private final ArrayList<Collectible> collectibles; //Liste des objets à ramasser
     private Player current_player; //Joueur en train de joueur
     private int playerCpt; //Compteur utiliser pour changer de joueur à la fin du tour
 
     //Constructeur
-    public Board(ArrayList<Player> _players, ArrayList<Collectible> _collectibles) {
+    public Board(ArrayList<Player> _players) {
         this.players = _players;
-        this.collectibles = _collectibles;
         playerCpt = 0;
     }
 
@@ -69,7 +67,6 @@ public class Board extends GridPane {
                                 tempCell.color(Color.DARKGRAY);
                                 temp.add(tempCell);
                             }
-
                         }
                     }
                 } else if (temp.size() < current_unit.range) {
@@ -77,26 +74,14 @@ public class Board extends GridPane {
                     //Si on n'a pas déjà drag sur la case et que ce n'est pas la case sur laquelle est notre unité,on l'ajoute
                     if (!temp.contains(tempCell) && !tempCell.getChildren().contains(current_unit)) {
                         if (tempCell.getChildren().size() > 1 && current_unit.onAttackRange(tempCell)
-                                && tempCell.getChildren().get(1) instanceof Unit) {
+                                && (tempCell.getChildren().get(1) instanceof Unit)) {
                             tempCell.color(Color.DARKRED);
                             temp.add(tempCell);
                         }
-
                     }
-
                 }
             }
-
         });//Fin setOnMouseDragged
-
-        //On place de manière aléatoire les collectibles 
-        Random r = new Random();
-
-        for (Collectible collectible : collectibles) {
-            Cell temp = (Cell) this.getChildren().get(r.nextInt(boardHeight * boardWidth));
-            temp.getChildren().add(collectible);
-        }
-
     }
 
 //Lors d'un nouveau tour, on change de joueur et on réinitialise les unités
@@ -108,7 +93,6 @@ public class Board extends GridPane {
             current_player = players.get(playerCpt);
             playerCpt = 0;
         }
-
         for (Unit unit : current_player.getUnits()) {
             unit.newTurn();
         }
@@ -124,7 +108,6 @@ public class Board extends GridPane {
             temp = (Cell) this.getChildren().get(r.nextInt(boardHeight * boardWidth));
         } while (temp.getChildren().size() > 1);
         temp.getChildren().add(unit);
-
     }
 
     //Décolore toutes les cases (après le déplacement d'un joueur notamment)
