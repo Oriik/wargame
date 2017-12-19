@@ -7,18 +7,28 @@ package tower;
 
 import java.util.ArrayList;
 import javafx.event.EventType;
-import javafx.scene.layout.GridPane;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.stage.Screen;
+import static tower.Constantes.boardHeight;
+import static tower.Constantes.boardWidth;
+import static tower.Constantes.cellWidth;
 
 /**
  *
  * @author Guillaume
  */
-public class Game extends GridPane {
+public class Game extends BorderPane {
 
     public Board board;
     public Menu menu;
     public ArrayList<Player> players;
     public ArrayList<Collectible> collectibles;
+    public ScrollPane scroll;
 
     /*
     Fonction d'initialisation
@@ -31,26 +41,49 @@ public class Game extends GridPane {
         Player player2 = new Player("Joueur 2");
         players.add(player1);
         players.add(player2);
-
-        Collectible piece = new Collectible();
-        Collectible piece2 = new Collectible();
         collectibles = new ArrayList();
-        collectibles.add(piece);
-        collectibles.add(piece2);
+        for (int i = 0; i < boardWidth; i++) {
+            collectibles.add(new Collectible());
+        }
+
         board = new Board(players, collectibles);
         board.initialize();
         menu = new Menu();
         menu.initMenu();
 
-        this.add(board, 0, 0);
-        this.add(menu, 1, 0);
+        //On créé notre ScrollPane avec les bonnes caractéristiques pour avoir une grande map qui bouge dans notre fenetre
+        Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
+        scroll = new ScrollPane();
+        board.setPrefWidth(screenSize.getWidth() * 0.80);
+        scroll.setHbarPolicy(ScrollBarPolicy.NEVER);
+        scroll.setVbarPolicy(ScrollBarPolicy.NEVER);
+        scroll.setContent(board);
+
+        //TODO : Un inventaire en haut de l'écran avec le nombre de ressources du joueur actuel
+        Pane p = new Pane();
+        p.getChildren().add(new Label("INVENTAIRE TODO AVEC BOIS OR MANA ETC"));
+        
+        this.setTop(p);
+        this.setCenter(scroll);
+        this.setRight(menu);
+
         //Tous les évènements seront géré par une instance de la classe MyEventHandler
         this.addEventHandler(EventType.ROOT, new MyEventHandler(menu, board));
     }
-
+    
+    //Bouge le ScrollPane sur l'unité sélectionné
+    public void focusCameraOnUnit(Unit unit){
+        scroll.setHvalue(unit.getParent().getLayoutX() / (boardHeight * (cellWidth + 1)));
+        scroll.setVvalue(unit.getParent().getLayoutY() / (boardWidth * (cellWidth + 1)));
+    }
 
     public void newTurn() {
         board.newTurn();
+        menu.newTurn(board.getCurrent_player());
+        //On "centre" la grille sur une unité du joueur
+       focusCameraOnUnit(board.getCurrent_player().getUnits().get(0));
+       
+
     }
 
     //On lance le jeu, fonction appelé après l'écran Home
@@ -70,8 +103,12 @@ public class Game extends GridPane {
         players.get(1).addGrunt();
         board.addUnitOnBoard(players.get(0).getUnits().get(0));
         board.addUnitOnBoard(players.get(1).getUnits().get(0));
-        
+
         newTurn();
+    }
+
+    void addUnitOnBoard(Unit unit) {
+        board.addUnitOnBoard(unit);
     }
 
 }

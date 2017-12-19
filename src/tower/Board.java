@@ -7,19 +7,15 @@ package tower;
 
 import java.util.ArrayList;
 import java.util.Random;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import static javafx.scene.paint.Color.GREEN;
 import javafx.scene.shape.Rectangle;
 import static tower.Cell.temp;
+import static tower.Constantes.boardHeight;
+import static tower.Constantes.boardWidth;
 import static tower.Constantes.cellWidth;
-import tower.Events.PlayerChangedEvent;
 
 /**
  *
@@ -46,21 +42,12 @@ public class Board extends GridPane {
      */
     public void initialize() {
 
-        ///On créé un tableau de 50x33 case (Cell)
-        for (int x = 0; x < 33; x++) {
-            for (int y = 0; y < 50; y++) {
+        ///On créé un tableau de X x Y case (Cell)
+        for (int x = 0; x < boardWidth; x++) {
+            for (int y = 0; y < boardHeight; y++) {
 
                 Cell cell = new Cell(this);
                 cell.initCell();
-                if(x==0||y==0||y==49||x==32){ //entoure l'arène d'une couleur
-                    cell.setBackground(new Background(new BackgroundFill(Color.BROWN, CornerRadii.EMPTY, Insets.EMPTY)));
-                }
-                else if(x==16&&y==25){ //ajout de la tour
-                    cell.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
-                }else{ //ajout de l'herbe
-                    cell.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
-                }
-                
                 this.add(cell, y, x);
             }
         }
@@ -72,7 +59,7 @@ public class Board extends GridPane {
             //Si aucune unité n'est sélectionnée, on ne fait rien
             if (current_unit != null) {
                 int posX = ((int) Math.floor(event.getX() / (cellWidth + 1)));
-                int posY = ((int) Math.floor(event.getY() / (cellWidth + 1)) * 50);
+                int posY = ((int) Math.floor(event.getY() / (cellWidth + 1)) * boardHeight);
                 //Temp est une liste static de la classe Cell, qui va contenir les cases sur lesquelles on a drag
                 if (temp.size() < current_unit.move) {
                     Cell tempCell = (Cell) this.getChildren().get(posX + posY);
@@ -92,10 +79,10 @@ public class Board extends GridPane {
         Random r = new Random();
 
         for (Collectible collectible : collectibles) {
-            Cell temp = (Cell) this.getChildren().get(r.nextInt(1650));
+            Cell temp = (Cell) this.getChildren().get(r.nextInt(boardHeight*boardWidth));
             temp.getChildren().add(collectible);
         }
-        
+
     }
 
     //Lors d'un nouveau tour, on change de joueur et on réinitialise les unités
@@ -112,10 +99,7 @@ public class Board extends GridPane {
             unit.newTurn();
         }
         uncolorCells();
-
-        PlayerChangedEvent playerChanged = new PlayerChangedEvent();
-        this.fireEvent(playerChanged);
-
+        
     }
 
     //Permet d'afficher une unité sur le plateau de jeu (position random pour l'instant)
@@ -123,7 +107,7 @@ public class Board extends GridPane {
         Random r = new Random();
         Cell temp;
         do {
-            temp = (Cell) this.getChildren().get(r.nextInt(1650));
+            temp = (Cell) this.getChildren().get(r.nextInt(boardHeight*boardWidth));
         } while (temp.getChildren().size() > 1);
         temp.getChildren().add(unit);
 
@@ -155,4 +139,5 @@ public class Board extends GridPane {
     public Unit getCurrent_unit() {
         return current_unit;
     }
+
 }

@@ -5,8 +5,8 @@
  */
 package tower;
 
+import javafx.event.Event;
 import javafx.event.EventType;
-import tower.Events.PickCollectibleEvent;
 
 /**
  *
@@ -15,6 +15,8 @@ import tower.Events.PickCollectibleEvent;
 public class Constantes {
     
     public static int cellWidth = 20;
+    public static int boardWidth = 100;
+    public static int boardHeight = 100;
     
-    public static EventType<PickCollectibleEvent> myEventType = new EventType<>("NOIDEAHOWITSWORKING");
+    public static EventType<Event> myEventType = new EventType<>("NOIDEAHOWITSWORKING");
 }

@@ -27,8 +27,7 @@ import tower.Events.PickCollectibleEvent;
 
     //Constructeur
     public Unit(int _range, int _moveMax, Color color) {
-        super(5,color);
-        this.setStroke(Color.BLACK);
+        super(5,color);  
         this.moveMax = _moveMax;
         this.range = _range;
         move=moveMax;

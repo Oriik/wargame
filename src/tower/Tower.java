@@ -43,16 +43,15 @@ public class Tower extends Application {
     }
 
     //Fonction qui lance le jeu une fois que les noms et couleurs des joueurs ont été sélectionés
-    private void startGame() {        
-        game.start(home.player1Name.getText(),
-                 home.player2Name.getText(),
-                (String)home.couleurJoueur1.getSelectionModel().getSelectedItem(),
-                (String)home.couleurJoueur2.getSelectionModel().getSelectedItem());
-         Scene scene2 = new Scene(game, screenSize.getWidth(), screenSize.getHeight());
+    private void startGame() {
+        Scene scene2 = new Scene(game, screenSize.getWidth(), screenSize.getHeight());
         stage.setScene(scene2);
-    }
+        game.start(home.player1Name.getText(),
+                home.player2Name.getText(),
+                (String) home.couleurJoueur1.getSelectionModel().getSelectedItem(),
+                (String) home.couleurJoueur2.getSelectionModel().getSelectedItem());
 
- 
+    }
 
     /**
      * @param args the command line arguments
