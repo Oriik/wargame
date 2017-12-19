@@ -49,6 +49,7 @@ abstract public class Unit extends Rectangle {
     //Réinitialise le nombre de mouvement possible
     public void newTurn() {
         move = moveMax;
+        alreadyAttack=false;
     }
 
     //Déplace l'unité surla case destination
