@@ -5,16 +5,14 @@
  */
 package tower;
 
-import javafx.scene.image.Image;
-
 /**
  *
  * @author Jordi
  */
-public class Horseman extends Unit{
+public class Horseman extends Unit {
+
     public Horseman(String faction) {
-        super(1, 10, faction+"/horseman.png");
-        this.img = new Image(getClass().getResource("knight.jpg").toString());
+        super(1, 10, 150, 20, faction, "horseman.png");
     }
-    
+
 }

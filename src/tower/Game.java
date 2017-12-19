@@ -29,6 +29,7 @@ public class Game extends BorderPane {
     public ArrayList<Player> players;
     public ArrayList<Collectible> collectibles;
     public ScrollPane scroll;
+    public InventoryPane inventory;
 
     /*
     Fonction d'initialisation
@@ -60,19 +61,17 @@ public class Game extends BorderPane {
         scroll.setContent(board);
 
         //TODO : Un inventaire en haut de l'écran avec le nombre de ressources du joueur actuel
-        Pane p = new Pane();
-        p.getChildren().add(new Label("INVENTAIRE TODO AVEC BOIS OR MANA ETC"));
-        
-        this.setTop(p);
+        inventory = new InventoryPane();
+        this.setTop(inventory);
         this.setCenter(scroll);
         this.setRight(menu);
 
         //Tous les évènements seront géré par une instance de la classe MyEventHandler
         this.addEventHandler(EventType.ROOT, new MyEventHandler(menu, board));
     }
-    
+
     //Bouge le ScrollPane sur l'unité sélectionné
-    public void focusCameraOnUnit(Unit unit){
+    public void focusCameraOnUnit(Unit unit) {
         scroll.setHvalue(unit.getParent().getLayoutX() / (boardHeight * (cellWidth + 1)));
         scroll.setVvalue(unit.getParent().getLayoutY() / (boardWidth * (cellWidth + 1)));
     }
@@ -80,9 +79,9 @@ public class Game extends BorderPane {
     public void newTurn() {
         board.newTurn();
         menu.newTurn(board.getCurrent_player());
+        inventory.refresh(board.getCurrent_player().wood, board.getCurrent_player().gold, board.getCurrent_player().mana);
         //On "centre" la grille sur une unité du joueur
-       focusCameraOnUnit(board.getCurrent_player().getUnits().get(0));
-       
+        focusCameraOnUnit(board.getCurrent_player().getUnits().get(0));
 
     }
 
@@ -104,9 +103,9 @@ public class Game extends BorderPane {
         players.get(1).addHorseman();
         board.addUnitOnBoard(players.get(0).getUnits().get(0));
         board.addUnitOnBoard(players.get(1).getUnits().get(0));
-         board.addUnitOnBoard(players.get(0).getUnits().get(1));
+        board.addUnitOnBoard(players.get(0).getUnits().get(1));
         board.addUnitOnBoard(players.get(1).getUnits().get(1));
-         board.addUnitOnBoard(players.get(0).getUnits().get(2));
+        board.addUnitOnBoard(players.get(0).getUnits().get(2));
         board.addUnitOnBoard(players.get(1).getUnits().get(2));
 
         newTurn();

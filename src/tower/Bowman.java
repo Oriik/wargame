@@ -10,10 +10,9 @@ package tower;
  * @author Jordi
  */
 public class Bowman extends Unit {
-    
+
     public Bowman(String faction) {
-        super(5, 5, faction+"/bowman.png");
-/*        this.img = new Image(getClass().getResource("footman.jpg").toString());*/
+        super(5, 5, 80, 25, faction, "bowman.png");
     }
-    
+
 }

@@ -8,8 +8,6 @@ package tower;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 /**
@@ -23,8 +21,6 @@ public class Menu extends GridPane {
     public Label labelCurrentPlayer;
     public Label currentPlayer;
     public Button endOfTurn;
-    public Image image;
-    public ImageView imv = new ImageView();
     public Player current_player;
     public Button addUnit;
 
@@ -64,9 +60,6 @@ public class Menu extends GridPane {
         this.add(endOfTurn, 0, 0);
         this.add(labelCurrentPlayer, 0, 2);
         this.add(currentPlayer, 1, 2);
-        imv.setFitWidth(150);
-        imv.setFitHeight(200);
-        this.add(imv, 0, 3);
         this.add(addUnit, 0, 4);
 
     }
@@ -84,7 +77,6 @@ public class Menu extends GridPane {
         refreshScore(current_player.getScore());
         currentPlayer.setText(current_player.getName());
         refreshScore(current_player.getScore());
-        imv.setImage(null);
         //On affiche les unités possédées par le joueur courant
         int x = 0, y = 5;
         for (Unit unit : current_player.getUnits()) {
@@ -92,6 +84,7 @@ public class Menu extends GridPane {
             btn.setOnAction((ActionEvent e) -> {
                 ((Game)this.getParent()).focusCameraOnUnit(unit);
             });
+            btn.setStyle("-fx-background-color: Transparent;");
             this.add(btn, x, y++);
         }
 

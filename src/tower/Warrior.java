@@ -5,19 +5,14 @@
  */
 package tower;
 
-import javafx.scene.image.Image;
-
 /**
  *
  * @author Guillaume
  */
 public class Warrior extends Unit {
-   
 
-    
     public Warrior(String faction) {
-        super(1, 4, faction+"/warrior.png");
-        this.img = new Image(getClass().getResource("Grunt.jpg").toString());
+        super(1, 4, 180, 15, faction, "warrior.png");
     }
-    
+
 }

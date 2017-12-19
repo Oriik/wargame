@@ -8,13 +8,7 @@ package tower;
 import java.util.ArrayList;
 import java.util.Random;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -39,8 +33,6 @@ public class Board extends GridPane {
         this.players = _players;
         this.collectibles = _collectibles;
         playerCpt = 0;
-        
-
     }
 
     /*
@@ -67,32 +59,47 @@ public class Board extends GridPane {
             if (current_unit != null) {
                 int posX = ((int) Math.floor(event.getX() / (cellWidth + 1)));
                 int posY = ((int) Math.floor(event.getY() / (cellWidth + 1)) * boardHeight);
-                //Temp est une liste static de la classe Cell, qui va contenir les cases sur lesquelles on a drag
-                if (temp.size() < current_unit.move) {
+                if (!current_player.modeAttack) {
+                    //Temp est une liste static de la classe Cell, qui va contenir les cases sur lesquelles on a drag
+                    if (temp.size() < current_unit.move) {
+                        Cell tempCell = (Cell) this.getChildren().get(posX + posY);
+                        //Si on n'a pas déjà drag sur la case et que ce n'est pas la case sur laquelle est notre unité,on l'ajoute
+                        if (!temp.contains(tempCell) && !tempCell.getChildren().contains(current_unit)) {
+                            if (current_unit.onMoveRange(tempCell)) {
+                                tempCell.color(Color.DARKGRAY);
+                                temp.add(tempCell);
+                            }
+
+                        }
+                    }
+                } else if (temp.size() < current_unit.range) {
                     Cell tempCell = (Cell) this.getChildren().get(posX + posY);
                     //Si on n'a pas déjà drag sur la case et que ce n'est pas la case sur laquelle est notre unité,on l'ajoute
                     if (!temp.contains(tempCell) && !tempCell.getChildren().contains(current_unit)) {
-                        if (current_unit.onRange(tempCell)) {
-                            tempCell.color(Color.DARKGRAY);
+                        if (tempCell.getChildren().size() > 1 && current_unit.onAttackRange(tempCell)
+                                && tempCell.getChildren().get(1) instanceof Unit) {
+                            tempCell.color(Color.DARKRED);
+                            temp.add(tempCell);
                         }
-                        temp.add(tempCell);
-                    }
-                }
 
+                    }
+
+                }
             }
+
         });//Fin setOnMouseDragged
 
         //On place de manière aléatoire les collectibles 
         Random r = new Random();
 
         for (Collectible collectible : collectibles) {
-            Cell temp = (Cell) this.getChildren().get(r.nextInt(boardHeight*boardWidth));
+            Cell temp = (Cell) this.getChildren().get(r.nextInt(boardHeight * boardWidth));
             temp.getChildren().add(collectible);
         }
 
     }
 
-    //Lors d'un nouveau tour, on change de joueur et on réinitialise les unités
+//Lors d'un nouveau tour, on change de joueur et on réinitialise les unités
     public void newTurn() {
         if (playerCpt < players.size() - 1) {
             current_player = players.get(playerCpt);
@@ -106,7 +113,7 @@ public class Board extends GridPane {
             unit.newTurn();
         }
         uncolorCells();
-        
+
     }
 
     //Permet d'afficher une unité sur le plateau de jeu (position random pour l'instant)
@@ -114,7 +121,7 @@ public class Board extends GridPane {
         Random r = new Random();
         Cell temp;
         do {
-            temp = (Cell) this.getChildren().get(r.nextInt(boardHeight*boardWidth));
+            temp = (Cell) this.getChildren().get(r.nextInt(boardHeight * boardWidth));
         } while (temp.getChildren().size() > 1);
         temp.getChildren().add(unit);
 
@@ -129,6 +136,7 @@ public class Board extends GridPane {
             }
         }
     }
+
     //Getters et Setters
     public void setCurrent_player(Player current_player) {
         this.current_player = current_player;

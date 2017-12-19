@@ -9,6 +9,8 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -44,8 +46,13 @@ public class Tower extends Application {
 
     //Fonction qui lance le jeu une fois que les noms et couleurs des joueurs ont été sélectionés
     private void startGame() {
-        Scene scene2 = new Scene(game, screenSize.getWidth(), screenSize.getHeight());
-        stage.setScene(scene2);
+        Scene sceneGame = new Scene(game, screenSize.getWidth(), screenSize.getHeight());
+        sceneGame.setOnKeyPressed((KeyEvent event) -> {
+            if (event.getCode() == KeyCode.A) {
+                game.board.getCurrent_player().modeAttack = !game.board.getCurrent_player().modeAttack;
+            }
+        });
+        stage.setScene(sceneGame);
         game.start(home.player1Name.getText(),
                 home.player2Name.getText());
 

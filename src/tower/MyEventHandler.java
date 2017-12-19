@@ -10,8 +10,6 @@ import tower.Events.PickCollectibleEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import tower.Events.CellBusyEvent;
-import tower.Events.UnitPickedEvent;
-import tower.Events.UnitUnpickedEvent;
 
 /**
  *
@@ -43,16 +41,6 @@ public class MyEventHandler implements EventHandler {
             System.out.println("Case déjà occupée !");
             event.consume();
         }
-        
-        if (event instanceof UnitPickedEvent){
-            menu.imv.setImage(board.getCurrent_unit().img);
-             event.consume();
-        }
-        if (event instanceof UnitUnpickedEvent){
-            menu.imv.setImage(null);
-             event.consume();
-        }
-       
     }
 
 }
