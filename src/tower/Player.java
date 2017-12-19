@@ -6,7 +6,6 @@
 package tower;
 
 import java.util.ArrayList;
-import javafx.scene.paint.Color;
 
 /**
  *
@@ -16,69 +15,43 @@ public class Player {
 
     Board board;
 
-    public Color playerColor;
+   public String faction;
     private String name;
     private int score = 0;
     private ArrayList<Unit> units;
 
     //Constructeur
-    public Player(String _name) {
+    public Player(String _name, String _faction) {
         this.name = _name;
         units = new ArrayList();
+        this.faction = _faction;
     }
 
     //On augmente le score de la valeur entrée
     public void increaseScore(int by) {
         score += by;
     }
-
-    //On attribue la bonne couleur au joueur
-    public void setColorFromString(String color) {
-        switch (color) {
-            case "Bleu":
-                playerColor = Color.BLUE;
-                break;
-            case "Rouge":
-                playerColor = Color.RED;
-                break;
-            case "Vert":
-                playerColor = Color.GREEN;
-                break;
-            case "Violet":
-                playerColor = Color.PURPLE;
-                break;
-            case "Noir":
-                playerColor = Color.BLACK;
-                break;
-            case "Jaune":
-                playerColor = Color.YELLOW;
-                break;
-            default:
-                playerColor = Color.ALICEBLUE;
-                break;
-        }
-    }
-
+    
     //Ajouter un grunt dans la liste des unités du joueur
-    public void addGrunt() {
-        units.add(new Grunt(playerColor));
+    public void addWarrior() {
+        units.add(new Warrior(faction));
     }
     
-    public void addChevaucheur() {
-        units.add(new Chevaucheurdeloup(playerColor));
+    public void addHorseman() {
+        units.add(new Horseman(faction));
     }
 
-    public void addChasseur() {
-        units.add(new Chasseurtroll(playerColor));
+   public void addBowman() {
+        units.add(new Bowman(faction));
     }
 
-    public void addFantassin() {
+   /* public void addFantassin() {
         units.add(new Fantassin(playerColor));
     }
 
     public void addChevalier() {
         units.add(new Chevalier(playerColor));
-    }
+    }*/
 
     //Getters et Setters
     public String getName() {

@@ -6,18 +6,15 @@
 package tower;
 
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 
 /**
  *
  * @author Jordi
  */
-public class Chasseurtroll extends Unit {
-    
-        
-    public Chasseurtroll(Color color) {
-        super(1, 4, color);
-        this.img = new Image(getClass().getResource("troll.jpg").toString());
+public class Horseman extends Unit{
+    public Horseman(String faction) {
+        super(1, 10, faction+"/horseman.png");
+        this.img = new Image(getClass().getResource("knight.jpg").toString());
     }
     
 }

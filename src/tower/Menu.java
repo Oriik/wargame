@@ -49,7 +49,7 @@ public class Menu extends GridPane {
         
         //Bouton achat d'une nouvelle unité
         addUnit.setOnAction((ActionEvent e) -> {
-            current_player.addGrunt();
+            current_player.addWarrior();
             ((Game)this.getParent()).addUnitOnBoard(current_player.getUnits().get(current_player.getUnits().size()-1));
         });
     }

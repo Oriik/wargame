@@ -47,9 +47,7 @@ public class Tower extends Application {
         Scene scene2 = new Scene(game, screenSize.getWidth(), screenSize.getHeight());
         stage.setScene(scene2);
         game.start(home.player1Name.getText(),
-                home.player2Name.getText(),
-                (String) home.couleurJoueur1.getSelectionModel().getSelectedItem(),
-                (String) home.couleurJoueur2.getSelectionModel().getSelectedItem());
+                home.player2Name.getText());
 
     }
 

@@ -37,8 +37,8 @@ public class Game extends BorderPane {
     public void initGame() {
         //On créé les deux joueurs, avec une valeur par défaut pour leurs noms
         players = new ArrayList();
-        Player player1 = new Player("Joueur 1");
-        Player player2 = new Player("Joueur 2");
+        Player player1 = new Player("Joueur 1", "human");
+        Player player2 = new Player("Joueur 2", "orc");
         players.add(player1);
         players.add(player2);
         collectibles = new ArrayList();
@@ -87,7 +87,7 @@ public class Game extends BorderPane {
     }
 
     //On lance le jeu, fonction appelé après l'écran Home
-    void start(String player1Name, String player2Name, String colorP1, String colorP2) {
+    void start(String player1Name, String player2Name) {
         //On nomme les joueurs, si ils ont saisie un nom
         if (!"".equals(player1Name)) {
             players.get(0).setName(player1Name);
@@ -95,14 +95,19 @@ public class Game extends BorderPane {
         if (!"".equals(player2Name)) {
             players.get(1).setName(player2Name);
         }
-        //On attribue les bonnes couleurs
-        players.get(0).setColorFromString(colorP1);
-        players.get(1).setColorFromString(colorP2);
         //On créé une unité pour chaque joueur pour commencer la partie
-        players.get(0).addGrunt();
-        players.get(1).addGrunt();
+        players.get(0).addWarrior();
+        players.get(0).addBowman();
+        players.get(0).addHorseman();
+        players.get(1).addWarrior();
+        players.get(1).addBowman();
+        players.get(1).addHorseman();
         board.addUnitOnBoard(players.get(0).getUnits().get(0));
         board.addUnitOnBoard(players.get(1).getUnits().get(0));
+         board.addUnitOnBoard(players.get(0).getUnits().get(1));
+        board.addUnitOnBoard(players.get(1).getUnits().get(1));
+         board.addUnitOnBoard(players.get(0).getUnits().get(2));
+        board.addUnitOnBoard(players.get(1).getUnits().get(2));
 
         newTurn();
     }

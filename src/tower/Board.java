@@ -8,7 +8,13 @@ package tower;
 import java.util.ArrayList;
 import java.util.Random;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -33,6 +39,7 @@ public class Board extends GridPane {
         this.players = _players;
         this.collectibles = _collectibles;
         playerCpt = 0;
+        
 
     }
 

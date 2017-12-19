@@ -30,10 +30,7 @@ public class Home extends BorderPane {
     private final Label labelPlayer2;
     public TextField player2Name;
     private final Label title;
-    private final ObservableList<String> options ;
-    private final ObservableList<String> options2 ;
-    public ComboBox couleurJoueur1;
-    public ComboBox couleurJoueur2;
+   
 
     //Ecran d'accuiel sur lequel les joueurs saisissent leurs noms et couleurs
     //Que de l'affichage, rien d'intéressant
@@ -41,27 +38,20 @@ public class Home extends BorderPane {
         title = new Label("----------- TOWER -----------");
         btnStart = new Button("START");
         btnStart.prefWidth(200);
-        labelPlayer1 = new Label("Joueur 1 : ");
-        labelPlayer2 = new Label("Joueur 2 : ");
+        labelPlayer1 = new Label("Humain - Joueur 1 : ");
+        labelPlayer2 = new Label("Orc - Joueur 2 : ");
         player1Name = new TextField("Joueur1");
         player1Name.setMaxWidth(100);
         player2Name = new TextField("Joueur2");
         player2Name.setMaxWidth(100);
-        couleurJoueur1=new ComboBox();
-        couleurJoueur2= new ComboBox();
-        options = FXCollections.observableArrayList("Rouge","Bleu","Vert");
-        couleurJoueur1.setItems(options);
-        couleurJoueur1.getSelectionModel().selectFirst();
-        options2 = FXCollections.observableArrayList("Violet","Noir","Jaune");
-        couleurJoueur2.setItems(options2);
-        couleurJoueur2.getSelectionModel().selectFirst();
+      
         
 
         HBox hboxStart = createHBox(btnStart);
         HBox hboxTitle = createHBox(title);
                 
-        VBox vboxPlayer1 = createPlayerVbox(labelPlayer1,player1Name,couleurJoueur1);       
-        VBox vboxPlayer2 = createPlayerVbox(labelPlayer2,player2Name,couleurJoueur2);
+        VBox vboxPlayer1 = createPlayerVbox(labelPlayer1,player1Name);       
+        VBox vboxPlayer2 = createPlayerVbox(labelPlayer2,player2Name);
  
         
         VBox vbox = new VBox();
@@ -82,13 +72,12 @@ public class Home extends BorderPane {
         return hboxStart;
     }
 
-    private VBox createPlayerVbox(Label labelPlayer, TextField playerName, ComboBox couleurJoueur) {
+    private VBox createPlayerVbox(Label labelPlayer, TextField playerName) {
         VBox vboxPlayer1 = new VBox();
         vboxPlayer1.setAlignment(Pos.TOP_CENTER);
         vboxPlayer1.setPadding(new Insets(30));
         vboxPlayer1.getChildren().add(labelPlayer);
         vboxPlayer1.getChildren().add(playerName);
-        vboxPlayer1.getChildren().add(couleurJoueur);
         return vboxPlayer1;
     }
 

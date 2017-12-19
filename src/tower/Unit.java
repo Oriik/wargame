@@ -8,8 +8,9 @@ package tower;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import static tower.Constantes.cellWidth;
 import tower.Events.CellBusyEvent;
 import tower.Events.OutOfRangeEvent;
 import tower.Events.PickCollectibleEvent;
@@ -18,7 +19,7 @@ import tower.Events.PickCollectibleEvent;
  *
  * @author Guillaume
  */
-  abstract public class Unit extends Circle {
+  abstract public class Unit extends Rectangle {
       
     public int moveMax;
     public int range;
@@ -26,8 +27,10 @@ import tower.Events.PickCollectibleEvent;
     public Image img;
 
     //Constructeur
-    public Unit(int _range, int _moveMax, Color color) {
-        super(5,color);  
+    public Unit(int _range, int _moveMax, String imgPath) {
+        super(cellWidth,cellWidth);  
+        Image image = new Image(getClass().getResource(imgPath).toString());
+        this.setFill(new ImagePattern(image));
         this.moveMax = _moveMax;
         this.range = _range;
         move=moveMax;

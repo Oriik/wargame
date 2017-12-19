@@ -6,18 +6,17 @@
 package tower;
 
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 
 /**
  *
  * @author Guillaume
  */
-public class Grunt extends Unit {
+public class Warrior extends Unit {
    
 
     
-    public Grunt(Color color) {
-        super(1, 4, color);
+    public Warrior(String faction) {
+        super(1, 4, faction+"/warrior.png");
         this.img = new Image(getClass().getResource("Grunt.jpg").toString());
     }
     

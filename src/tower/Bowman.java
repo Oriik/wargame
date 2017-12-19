@@ -5,18 +5,15 @@
  */
 package tower;
 
-import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
-
 /**
  *
  * @author Jordi
  */
-public class Fusilier extends Unit {
+public class Bowman extends Unit {
     
-    public Fusilier(Color color) {
-        super(1, 4, color);
-        this.img = new Image(getClass().getResource("footman.jpg").toString());
+    public Bowman(String faction) {
+        super(5, 5, faction+"/bowman.png");
+/*        this.img = new Image(getClass().getResource("footman.jpg").toString());*/
     }
     
 }

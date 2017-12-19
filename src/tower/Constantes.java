@@ -14,7 +14,7 @@ import javafx.event.EventType;
  */
 public class Constantes {
     
-    public static int cellWidth = 20;
+    public static int cellWidth = 30;
     public static int boardWidth = 100;
     public static int boardHeight = 100;
     

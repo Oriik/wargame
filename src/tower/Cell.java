@@ -8,10 +8,17 @@ package tower;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import tower.Events.UnitPickedEvent;
 import tower.Events.UnitUnpickedEvent;
@@ -38,11 +45,14 @@ public class Cell extends StackPane {
 
         //On créé un rectangle qui va servir de "fond" de notre case
         Rectangle rec = new Rectangle();
-        rec.setFill(Color.TRANSPARENT);
-        rec.setStroke(Color.BLACK);
+       // Image image = new Image(getClass().getResource("grass.png").toString());
+        rec.setStroke(Color.TRANSPARENT);      
         rec.setHeight(Constantes.cellWidth);
         rec.setWidth(Constantes.cellWidth);
         this.getChildren().add(rec);
+        Image image = new Image(getClass().getResource("grass.png").toString());
+        Background bg = new Background(new BackgroundImage(image,BackgroundRepeat.REPEAT,BackgroundRepeat.REPEAT,BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT));
+        this.setBackground(bg);
 
         //On gère l'action quand le joueur lève le click
         this.setOnMouseReleased((MouseEvent event) -> {
