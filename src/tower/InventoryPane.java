@@ -18,19 +18,20 @@ import javafx.scene.layout.Pane;
 public class InventoryPane extends Pane {
 
     public HBox hbox;
-    public InventoryPane(){
+
+    public InventoryPane() {
         hbox = new HBox();
         hbox.setAlignment(Pos.CENTER);
         this.getChildren().add(hbox);
     }
 
-    public void refresh( int gold, int mana) {
+    public void refresh(int gold, int mana) {
         hbox.getChildren().clear();
         hbox.getChildren().add(new Label("  Or : "));
         hbox.getChildren().add(new Label(Integer.toString(gold)));
         hbox.getChildren().add(new Label(" |  Mana : "));
         hbox.getChildren().add(new Label(Integer.toString(mana)));
-        
+
     }
 
 }

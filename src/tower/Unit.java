@@ -35,19 +35,19 @@ public abstract class Unit extends Rectangle implements Serializable {
     public int price;
 
     //Constructeur
-    public Unit(int _range, int _moveMax, int _health, int _damage,int _price, String _faction, String _imgPath) {
+    public Unit(int _range, int _moveMax, int _health, int _damage, int _price, String _faction, String _imgPath) {
         super(cellWidth, cellWidth);
-        imgPath = _faction + "/" + _imgPath;
+        this.imgPath = _faction + "/" + _imgPath;
         Image image = new Image(getClass().getResource(_faction + "/" + _imgPath).toString());
         this.setFill(new ImagePattern(image));
         this.moveMax = _moveMax;
         this.range = _range;
-        move = moveMax;
+        this.move = moveMax;
         this.health = _health;
         this.damage = _damage;
-        alreadyAttack = false;
+        this.alreadyAttack = false;
         this.faction = _faction;
-        this.price=_price;
+        this.price = _price;
     }
 
     public void setImg() {

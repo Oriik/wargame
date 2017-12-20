@@ -28,7 +28,6 @@ public class Home extends BorderPane {
     private final Label labelPlayer2;
     public TextField player2Name;
     private final Label title;
-   
 
     //Ecran d'accuiel sur lequel les joueurs saisissent leurs noms et couleurs
     //Que de l'affichage, rien d'intéressant
@@ -42,22 +41,19 @@ public class Home extends BorderPane {
         player1Name.setMaxWidth(100);
         player2Name = new TextField("Joueur2");
         player2Name.setMaxWidth(100);
-      
-        
 
         HBox hboxStart = createHBox(btnStart);
         hboxStart.getChildren().add(loadGame);
         HBox hboxTitle = createHBox(title);
-                
-        VBox vboxPlayer1 = createPlayerVbox(labelPlayer1,player1Name);       
-        VBox vboxPlayer2 = createPlayerVbox(labelPlayer2,player2Name);
- 
-        
+
+        VBox vboxPlayer1 = createPlayerVbox(labelPlayer1, player1Name);
+        VBox vboxPlayer2 = createPlayerVbox(labelPlayer2, player2Name);
+
         VBox vbox = new VBox();
         vbox.setAlignment(Pos.TOP_CENTER);
         vbox.getChildren().add(vboxPlayer1);
         vbox.getChildren().add(vboxPlayer2);
-                
+
         this.setBottom(hboxStart);
         this.setTop(hboxTitle);
         this.setCenter(vbox);

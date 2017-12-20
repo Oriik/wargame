@@ -34,7 +34,7 @@ public class Menu extends GridPane {
     son score, l'image de l'unité sélectionnée et le bouton fin de tour*/
     public Menu() {
         this.endOfTurn = new Button("Fin du tour");
-        this.sauvegarde= new Button("Save");
+        this.sauvegarde = new Button("Save");
         this.labelCurrentPlayer = new Label("En train de jouer : ");
         this.currentPlayer = new Label("");
         this.addUnit = new Button("Achat Unité");
@@ -43,13 +43,13 @@ public class Menu extends GridPane {
         endOfTurn.setOnAction((ActionEvent e) -> {
             ((Game) this.getParent()).newTurn();
         });
-        
+
         //Bouton achat d'une nouvelle unité
         addUnit.setOnAction((ActionEvent e) -> {
-            current_player.addWarrior();   
+            current_player.addWarrior();
         });
-        
-        sauvegarde.setOnAction((ActionEvent e) ->{
+
+        sauvegarde.setOnAction((ActionEvent e) -> {
             try {
                 ((Game) this.getParent()).sauvegardeBDD("test.txt");
             } catch (IOException ex) {
@@ -67,11 +67,9 @@ public class Menu extends GridPane {
         this.add(labelCurrentPlayer, 0, 2);
         this.add(currentPlayer, 1, 2);
         this.add(addUnit, 0, 4);
-        this.add(sauvegarde,1,0);
+        this.add(sauvegarde, 1, 0);
 
     }
-
-
 
     public void newTurn(Player current_player) {
         this.getChildren().clear();
@@ -83,7 +81,7 @@ public class Menu extends GridPane {
         for (Unit unit : current_player.getUnits()) {
             Button btn = new Button(unit.getClass().getSimpleName());
             btn.setOnAction((ActionEvent e) -> {
-                ((Game)this.getParent()).focusCameraOnUnit(unit);
+                ((Game) this.getParent()).focusCameraOnUnit(unit);
             });
             btn.setStyle("-fx-background-color: Transparent;");
             this.add(btn, x, y++);

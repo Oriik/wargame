@@ -64,13 +64,30 @@ public class Cell extends StackPane implements Serializable {
              */
             if (board.getCurrent_unit() != null) {
                 Iterator<Cell> it = temp.iterator();
+                //On gère ici le mode déplacement
                 if (!board.getCurrent_player().modeAttack) {
 
                     while (it.hasNext()) {
-                        board.getCurrent_unit().move(it.next());
+                        Cell tempCell = it.next();
+                        if (tempCell.getChildren().size() > 1 && tempCell.getChildren().get(1) instanceof Resource) {
+                            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                            alert.setTitle("RESSOURCE !");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Voulez vous récolter de l'or ?");
+
+                            Optional<ButtonType> result = alert.showAndWait();
+                            if (result.get() == ButtonType.OK) {
+                                board.getCurrent_player().gold += ((Resource) tempCell.getChildren().get(1)).collect();
+                            } else {
+                                return;
+                            }
+                        }
+                        board.getCurrent_unit().move(tempCell);
                     }
                 } else {
+                    //On gère ici le mode attaque
                     while (it.hasNext()) {
+                        //On vérifie que l'unité n'a pas déjà attaqué pendant ce tour
                         if (board.getCurrent_unit().alreadyAttack) {
                             Alert alert = new Alert(Alert.AlertType.WARNING);
                             alert.setTitle("AU REPOS !");
@@ -81,7 +98,7 @@ public class Cell extends StackPane implements Serializable {
                             if (result.get() == ButtonType.OK) {
                                 return;
                             }
-
+                            //Si l'unité peut attaquer, on demande confirmation au joueur par une pop-up
                         } else {
                             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                             alert.setTitle("ENNEMI EN VU !");
@@ -90,7 +107,7 @@ public class Cell extends StackPane implements Serializable {
 
                             Optional<ButtonType> result = alert.showAndWait();
                             if (result.get() == ButtonType.OK) {
-                                    board.getCurrent_unit().attack((Unit) it.next().getChildren().get(1)); 
+                                board.getCurrent_unit().attack((Unit) it.next().getChildren().get(1));
                             } else {
                                 return;
                             }
@@ -141,4 +158,5 @@ public class Cell extends StackPane implements Serializable {
     public Node get(int i) {
         return this.getChildren().get(i);
     }
+
 }

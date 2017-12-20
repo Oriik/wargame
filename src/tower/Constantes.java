@@ -13,10 +13,10 @@ import javafx.event.EventType;
  * @author Guillaume
  */
 public class Constantes {
-    
+
     public static int cellWidth = 20;
     public static int boardWidth = 30;
     public static int boardHeight = 30;
-    
+
     public static EventType<Event> myEventType = new EventType<>("NOIDEAHOWITSWORKING");
 }

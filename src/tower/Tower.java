@@ -5,11 +5,7 @@
  */
 package tower;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -48,16 +44,16 @@ public class Tower extends Application {
             try {
                 game.board.players = Game.lectureBDD("test.txt");
             } catch (Exception ex) {
-               Alert alert = new Alert(Alert.AlertType.WARNING);
-                            alert.setTitle("Erreur ! ");
-                            alert.setHeaderText("Impossible de charger la partie");
-                            alert.setContentText("Merci de commencer une nouvelle partie");
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Erreur ! ");
+                alert.setHeaderText("Impossible de charger la partie");
+                alert.setContentText("Merci de commencer une nouvelle partie");
 
-                            Optional<ButtonType> result = alert.showAndWait();
-                            if (result.get() == ButtonType.OK) {
-                                Platform.exit();
-                                return;
-                            }
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK) {
+                    Platform.exit();
+                    return;
+                }
             }
             loadGame();
 

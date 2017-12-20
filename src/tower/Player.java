@@ -14,6 +14,7 @@ import java.util.ArrayList;
  */
 public class Player implements Serializable {
 
+    //Transcient indique que board ne doit pas être sérialisé lors de la sauvegarde
     transient Board board;
 
     public String faction;
@@ -22,16 +23,19 @@ public class Player implements Serializable {
     public int mana;
     public int score = 0;
     public ArrayList<Unit> units;
+    public ArrayList<Building> buildings;
     public boolean modeAttack;
+    
 
     //Constructeur
     public Player(String _name, String _faction, Board _board) {
         this.name = _name;
         units = new ArrayList();
+        buildings = new ArrayList();
         this.faction = _faction;
         this.gold = 100;
         this.mana = 0;
-        this.board=_board;
+        this.board = _board;
     }
 
     //On augmente le score de la valeur entrée
@@ -58,13 +62,12 @@ public class Player implements Serializable {
         board.addUnitOnBoard(temp);
     }
 
-    /* public void addFantassin() {
-        units.add(new Fantassin(playerColor));
+    public void addCastle() {
+        Castle temp = new Castle(faction);
+        buildings.add(temp);
+        board.addCastleOnBoard(temp);
     }
 
-    public void addChevalier() {
-        units.add(new Chevalier(playerColor));
-    }*/
     //Getters et Setters
     public String getName() {
         return name;

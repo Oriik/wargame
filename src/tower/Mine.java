@@ -9,10 +9,10 @@ package tower;
  *
  * @author Guillaume
  */
-public class Warrior extends Unit {
+public class Mine extends Resource {
 
-    public Warrior(String faction) {
-        super(1, 4, 180, 15, 100, faction, "warrior.png");
+    public Mine() {
+        super(600, 80, "mine.png");
     }
 
 }

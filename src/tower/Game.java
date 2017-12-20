@@ -41,9 +41,10 @@ public class Game extends BorderPane {
         //On créé les deux joueurs, avec une valeur par défaut pour leurs noms
         players = new ArrayList();
         board = new Board(players);
-        board.initialize();  
+        board.initialize();
+        board.initResources();
         Player player1 = new Player("Joueur 1", "human", board);
-        Player player2 = new Player("Joueur 2", "orc",board);
+        Player player2 = new Player("Joueur 2", "orc", board);
         players.add(player1);
         players.add(player2);
         menu = new Menu();
@@ -67,8 +68,8 @@ public class Game extends BorderPane {
 
     //Bouge le ScrollPane sur l'unité sélectionné
     public void focusCameraOnUnit(Unit unit) {
-        scroll.setHvalue(unit.getParent().getLayoutX() / (boardHeight * (cellWidth + 1)));
-        scroll.setVvalue(unit.getParent().getLayoutY() / (boardWidth * (cellWidth + 1)));
+        scroll.setHvalue(unit.getParent().getLayoutX() / (boardHeight * (cellWidth)));
+        scroll.setVvalue(unit.getParent().getLayoutY() / (boardWidth * (cellWidth)));
     }
 
     public void newTurn() {
@@ -96,9 +97,8 @@ public class Game extends BorderPane {
         players.get(1).addWarrior();
         players.get(1).addBowman();
         players.get(1).addHorseman();
-        ((Cell) board.getChildren().get(0)).getChildren().add(new Castle("human"));
-        ((Cell) board.getChildren().get(boardWidth * boardHeight - 1)).getChildren().add(new Castle("orc"));
-
+        players.get(0).addCastle();
+        players.get(1).addCastle();
         newTurn();
     }
 
@@ -131,8 +131,6 @@ public class Game extends BorderPane {
     }
 
     void loadGame() {
-        ((Cell) board.getChildren().get(0)).getChildren().add(new Castle("human"));
-        ((Cell) board.getChildren().get(boardWidth * boardHeight - 1)).getChildren().add(new Castle("orc"));
 
         players = board.players;
         for (Player p : board.players) {
@@ -141,6 +139,12 @@ public class Game extends BorderPane {
                 u.setHeight(cellWidth);
                 u.setImg();
                 board.addUnitOnBoard(u, u.position);
+            }
+            for (Building b : p.buildings) {
+                b.setWidth(cellWidth);
+                b.setHeight(cellWidth);
+                b.setImg();
+                board.addUnitOnBoard(b, b.position);
             }
         }
         newTurn();

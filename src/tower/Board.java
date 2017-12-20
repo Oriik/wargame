@@ -5,8 +5,8 @@
  */
 package tower;
 
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Random;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -23,7 +23,7 @@ import static tower.Constantes.cellWidth;
  */
 public class Board extends GridPane {
 
-    public  ArrayList<Player> players; //Liste des joueurs
+    public ArrayList<Player> players; //Liste des joueurs
     private Player current_player; //Joueur en train de joueur
     private int playerCpt;//Compteur utiliser pour changer de joueur à la fin du tour
     private Unit current_unit;
@@ -57,6 +57,7 @@ public class Board extends GridPane {
             if (current_unit != null) {
                 int posX = ((int) Math.floor(event.getX() / (cellWidth + 1)));
                 int posY = ((int) Math.floor(event.getY() / (cellWidth + 1)) * boardHeight);
+                //On gère ici le cas mode déplacement
                 if (!current_player.modeAttack) {
                     //Temp est une liste static de la classe Cell, qui va contenir les cases sur lesquelles on a drag
                     if (temp.size() < current_unit.move) {
@@ -69,9 +70,11 @@ public class Board extends GridPane {
                             }
                         }
                     }
+                    //On gère ici le cas mode attaque
                 } else if (temp.size() < current_unit.range) {
                     Cell tempCell = (Cell) this.getChildren().get(posX + posY);
-                    //Si on n'a pas déjà drag sur la case et que ce n'est pas la case sur laquelle est notre unité,on l'ajoute
+                    /*Si on n'a pas déjà drag sur la case, que ce n'est pas la case sur laquelle est notre unité,
+                     et qu'elle contient une unité, on l'ajoute*/
                     if (!temp.contains(tempCell) && !tempCell.getChildren().contains(current_unit)) {
                         if (tempCell.getChildren().size() > 1 && current_unit.onAttackRange(tempCell)
                                 && (tempCell.getChildren().get(1) instanceof Unit)) {
@@ -84,7 +87,18 @@ public class Board extends GridPane {
         });//Fin setOnMouseDragged
     }
 
-//Lors d'un nouveau tour, on change de joueur et on réinitialise les unités
+    public void initResources() {
+        Random random = new Random();
+        for (int i = 0; i < boardWidth / 2; i++) {
+            Cell temp;
+            do {
+                temp = (Cell) this.getChildren().get(random.nextInt(boardWidth * boardHeight));
+            } while (temp.getChildren().size() > 1);
+            temp.getChildren().add(new Mine());
+        }
+    }
+
+    //Lors d'un nouveau tour, on change de joueur et on réinitialise les unités
     public void newTurn() {
         if (playerCpt < players.size() - 1) {
             current_player = players.get(playerCpt);
@@ -105,12 +119,12 @@ public class Board extends GridPane {
         int i;
         Cell temp;
         if (unit.faction.compareTo("human") == 0) {
-            i = 0;
+            i = 1;
             do {
                 temp = (Cell) this.getChildren().get(i++);
             } while (temp.getChildren().size() > 1);
         } else {
-            i = boardHeight * boardWidth - 1;
+            i = boardHeight * boardWidth - 2;
             do {
                 temp = (Cell) this.getChildren().get(i--);
             } while (temp.getChildren().size() > 1);
@@ -118,11 +132,22 @@ public class Board extends GridPane {
         temp.getChildren().add(unit);
         int posX = ((int) Math.floor(temp.getLayoutX() / (cellWidth + 1)));
         int posY = ((int) Math.floor(temp.getLayoutY() / (cellWidth + 1)) * boardHeight);
-        unit.position =posX+posY;
+        unit.position = posX + posY;
     }
-     public void addUnitOnBoard(Unit unit, int position) {
-    
-         ((Cell)this.getChildren().get(position)).getChildren().add(unit);
+
+    public void addUnitOnBoard(Unit unit, int position) {
+
+        ((Cell) this.getChildren().get(position)).getChildren().add(unit);
+    }
+
+    public void addCastleOnBoard(Castle castle) {
+        if (castle.faction.compareTo("human") == 0) {
+            addUnitOnBoard(castle, 0);
+            castle.position = 0;
+        } else {
+            addUnitOnBoard(castle, boardHeight * boardWidth - 1);
+            castle.position = boardHeight * boardWidth - 1;
+        }
     }
 
     //Décolore toutes les cases (après le déplacement d'un joueur notamment)
