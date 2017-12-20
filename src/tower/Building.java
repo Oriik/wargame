@@ -21,7 +21,7 @@ public abstract class Building extends Unit {
     String destroyImgPath;
 
     public Building(String _faction, String _imgPath, String _destroyImgPath) {
-        super(0,0,500,0,_faction,_imgPath);
+        super(0,0,500,0,0,_faction,_imgPath);
         faction = _faction;
         destroyImgPath = _faction+"/"+_destroyImgPath;
     }

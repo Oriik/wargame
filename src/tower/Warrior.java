@@ -12,7 +12,7 @@ package tower;
 public class Warrior extends Unit {
 
     public Warrior(String faction) {
-        super(1, 4, 180, 15, faction, "warrior.png");
+        super(1, 4, 180, 15,100, faction, "warrior.png");
     }
 
 }

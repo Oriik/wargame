@@ -56,6 +56,7 @@ public class Tower extends Application {
                             Optional<ButtonType> result = alert.showAndWait();
                             if (result.get() == ButtonType.OK) {
                                 Platform.exit();
+                                return;
                             }
             }
             loadGame();

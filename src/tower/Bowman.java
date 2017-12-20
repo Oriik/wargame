@@ -12,7 +12,7 @@ package tower;
 public class Bowman extends Unit {
 
     public Bowman(String faction) {
-        super(5, 5, 80, 25, faction, "bowman.png");
+        super(5, 5, 80, 25,150, faction, "bowman.png");
     }
 
 }
