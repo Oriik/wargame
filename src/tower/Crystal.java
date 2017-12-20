@@ -5,16 +5,14 @@
  */
 package tower;
 
-import static tower.Constantes.warriorPrice;
-
 /**
  *
  * @author Guillaume
  */
-public class Warrior extends Unit {
+public class Crystal extends Resource{
 
-    public Warrior(String faction) {
-        super(1, 4, 180, 30, warriorPrice, faction, "warrior.png");
+    public Crystal() {
+        super(10000000, 10,"crystal.png");
     }
-
+    
 }

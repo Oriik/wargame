@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import static tower.Constantes.savePath;
 
 /**
  *
@@ -51,7 +52,7 @@ public class Menu extends GridPane {
 
         sauvegarde.setOnAction((ActionEvent e) -> {
             try {
-                ((Game) this.getParent()).sauvegardeBDD("test.txt");
+                ((Game) this.getParent()).sauvegardeBDD(savePath);
             } catch (IOException ex) {
                 Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
             }

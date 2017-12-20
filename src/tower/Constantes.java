@@ -5,18 +5,21 @@
  */
 package tower;
 
-import javafx.event.Event;
-import javafx.event.EventType;
-
 /**
  *
  * @author Guillaume
  */
 public class Constantes {
 
-    public static int cellWidth = 20;
-    public static int boardWidth = 30;
-    public static int boardHeight = 30;
+    public static int cellWidth = 40;
+    public static int boardWidth = 50;
+    public static int boardHeight = 50;
+    public static int warriorPrice = 100;
+    public static int bowmanPrice = 150;
+    public static int horsemanPrice = 200;
+    public static int rateManaGold = 4;
+    public static int win = 5;
+    public static int manaDrop=100;
+    public static String savePath ="save.txt";
 
-    public static EventType<Event> myEventType = new EventType<>("NOIDEAHOWITSWORKING");
 }

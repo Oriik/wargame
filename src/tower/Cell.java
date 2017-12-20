@@ -69,19 +69,35 @@ public class Cell extends StackPane implements Serializable {
 
                     while (it.hasNext()) {
                         Cell tempCell = it.next();
-                        if (!board.getCurrent_unit().alreadyRecolt && tempCell.getChildren().size() > 1 && tempCell.getChildren().get(1) instanceof Resource) {
-                            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                            alert.setTitle("RESSOURCE !");
-                            alert.setHeaderText(null);
-                            alert.setContentText("Voulez vous récolter de l'or ?");
+                        if (!board.getCurrent_unit().alreadyRecolt && tempCell.getChildren().size() > 1) {
+                            if (tempCell.getChildren().get(1) instanceof Mine) {
+                                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                                alert.setTitle("RESSOURCE !");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Voulez vous récolter de l'or ?");
 
-                            Optional<ButtonType> result = alert.showAndWait();
-                            if (result.get() == ButtonType.OK) {
-                                board.getCurrent_player().gold += ((Resource) tempCell.getChildren().get(1)).collect();
-                                board.getCurrent_unit().alreadyRecolt=true;
-                            } else {
-                                
+                                Optional<ButtonType> result = alert.showAndWait();
+                                if (result.get() == ButtonType.OK) {
+                                    board.getCurrent_player().gold += ((Resource) tempCell.getChildren().get(1)).collect();
+                                    board.getCurrent_unit().alreadyRecolt = true;
+                                } 
                             }
+                            if (tempCell.getChildren().get(1) instanceof Crystal) {
+                                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                                alert.setTitle("RESSOURCE !");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Voulez vous récolter du mana ?");
+
+                                Optional<ButtonType> result = alert.showAndWait();
+                                if (result.get() == ButtonType.OK) {
+                                    board.getCurrent_player().mana += ((Resource) tempCell.getChildren().get(1)).collect();
+                                    board.getCurrent_unit().alreadyRecolt = true;
+                                }
+                            }
+
+                        }
+                        if (tempCell.getChildren().size() > 1 && tempCell.getChildren().get(1) instanceof Tower) {
+                            TowerAlert alert = new TowerAlert(board.getCurrent_player());
                         }
                         board.getCurrent_unit().move(tempCell);
                     }
@@ -117,7 +133,6 @@ public class Cell extends StackPane implements Serializable {
                     }
                 }
             }
-
             //On réinitilise temp et on décolore les cases
             temp.clear();
             board.uncolorCells();
@@ -128,7 +143,12 @@ public class Cell extends StackPane implements Serializable {
         //On gère l'action quand le joueur click
         this.setOnMousePressed(
                 (MouseEvent event) -> {
-
+                    //Si on double clique, on regarde si il y a un Castle sur la case
+                    if (event.getClickCount() == 2) {
+                        if (this.getChildren().size() > 1 && this.getChildren().get(1) instanceof Castle) {
+                            BuyUnitGoldAlert alert = new BuyUnitGoldAlert(board.getCurrent_player());
+                        }
+                    }
                     //Si il clique sur le bouton droit, on désélectionne l'unité
                     if (event.getButton() == MouseButton.SECONDARY) {
                         board.setCurrent_unit(null);

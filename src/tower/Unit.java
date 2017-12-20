@@ -7,6 +7,7 @@ package tower;
 
 import java.io.Serializable;
 import java.util.Optional;
+import java.util.Random;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -151,7 +152,8 @@ public abstract class Unit extends Rectangle implements Serializable {
     }
 
     protected void isAttacked(int damage) {
-        health -= damage;
+        Random random = new Random();
+        health -= damage*(0.5+random.nextDouble());
         if (!isAlive()) {
             ((Cell) this.getParent()).getChildren().remove(this);
         }

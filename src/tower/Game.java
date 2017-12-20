@@ -137,6 +137,11 @@ public class Game extends BorderPane {
         board.players = save.players;
         board.resources = save.resources;
         for (Player p : board.players) {
+            for (Unit u : p.waiting) {
+                u.setWidth(cellWidth);
+                u.setHeight(cellWidth);
+                u.setImg();
+            }
             for (Unit u : p.getUnits()) {
                 u.setWidth(cellWidth);
                 u.setHeight(cellWidth);
@@ -150,14 +155,12 @@ public class Game extends BorderPane {
                 board.addUnitOnBoard(b, b.position);
             }
         }
-        System.out.println(board.resources);
         for (Resource r : board.resources) {
             r.setWidth(cellWidth);
             r.setHeight(cellWidth);
             r.setImg();
             board.addResourceOnBoard(r, r.position);
         }
-        System.out.println(board.resources);
         newTurn();
     }
 }

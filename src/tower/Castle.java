@@ -5,11 +5,6 @@
  */
 package tower;
 
-import java.util.Optional;
-import javafx.application.Platform;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-
 /**
  *
  * @author Guillaume
@@ -23,15 +18,7 @@ public class Castle extends Building {
     @Override
     public void isAttacked(int damage) {
         super.isAttacked(damage);
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("FIN DU JEU !");
-        alert.setHeaderText(null);
-        alert.setContentText("FIN DU JEU!");
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            Platform.exit();
-        }
+        EndGameAlert alert = new EndGameAlert();
     }
 
 }

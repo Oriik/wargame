@@ -50,6 +50,16 @@ public class Board extends GridPane {
                 this.add(cell, y, x);
             }
         }
+        /*On ajoute la tour et les cristaux ici 
+        * car on ne les sauvegarde pas étant donné qu'ils ne contiennent pas d'informations
+        */
+        
+        ((Cell)this.getChildren().get(boardWidth*(boardHeight/2) + boardWidth/2)).getChildren().add(new Tower());
+        ((Cell)this.getChildren().get(boardWidth*(boardHeight/4) + boardWidth/4)).getChildren().add(new Crystal());
+        ((Cell)this.getChildren().get(boardWidth*(boardHeight/4) + (3*boardWidth/4))).getChildren().add(new Crystal());
+        ((Cell)this.getChildren().get(boardWidth*(3*boardHeight/4) + boardWidth/4)).getChildren().add(new Crystal());
+        ((Cell)this.getChildren().get(boardWidth*(3*boardHeight/4) + (3*boardWidth/4))).getChildren().add(new Crystal());
+        
 
         /*On gère l'évènement de Drag car le drag est fait sur le plateau de jeu 
         et pas sur UNE case, donc on doit le gérer ici*/
@@ -105,7 +115,8 @@ public class Board extends GridPane {
         }
     }
 
-    //Lors d'un nouveau tour, on change de joueur et on réinitialise les unités
+    /*Lors d'un nouveau tour, on change de joueur, on affiche les unités créées au tour précédent,
+    et on réinitialise les unités */
     public void newTurn() {
         if (playerCpt < players.size() - 1) {
             current_player = players.get(playerCpt);
@@ -114,9 +125,15 @@ public class Board extends GridPane {
             current_player = players.get(playerCpt);
             playerCpt = 0;
         }
+        for(Unit unit :current_player.waiting){
+            current_player.getUnits().add(unit);
+            addUnitOnBoard(unit);
+        }
+        current_player.alreadyDropMana=false;
+        current_player.waiting.clear();
         for (Unit unit : current_player.getUnits()) {
             unit.newTurn();
-        }
+        } 
         uncolorCells();
 
     }
