@@ -29,6 +29,7 @@ public abstract class Unit extends Rectangle implements Serializable {
     public int damage;
     public int health;
     public boolean alreadyAttack;
+    public boolean alreadyRecolt;
     public String faction;
     public int position;
     public String imgPath;
@@ -46,6 +47,7 @@ public abstract class Unit extends Rectangle implements Serializable {
         this.health = _health;
         this.damage = _damage;
         this.alreadyAttack = false;
+        this.alreadyRecolt = false;
         this.faction = _faction;
         this.price = _price;
     }
@@ -59,6 +61,7 @@ public abstract class Unit extends Rectangle implements Serializable {
     public void newTurn() {
         move = moveMax;
         alreadyAttack = false;
+        alreadyRecolt = false;
     }
 
     //Déplace l'unité surla case destination

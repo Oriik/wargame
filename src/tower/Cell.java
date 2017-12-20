@@ -69,7 +69,7 @@ public class Cell extends StackPane implements Serializable {
 
                     while (it.hasNext()) {
                         Cell tempCell = it.next();
-                        if (tempCell.getChildren().size() > 1 && tempCell.getChildren().get(1) instanceof Resource) {
+                        if (!board.getCurrent_unit().alreadyRecolt && tempCell.getChildren().size() > 1 && tempCell.getChildren().get(1) instanceof Resource) {
                             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                             alert.setTitle("RESSOURCE !");
                             alert.setHeaderText(null);
@@ -78,8 +78,9 @@ public class Cell extends StackPane implements Serializable {
                             Optional<ButtonType> result = alert.showAndWait();
                             if (result.get() == ButtonType.OK) {
                                 board.getCurrent_player().gold += ((Resource) tempCell.getChildren().get(1)).collect();
+                                board.getCurrent_unit().alreadyRecolt=true;
                             } else {
-                                return;
+                                
                             }
                         }
                         board.getCurrent_unit().move(tempCell);
