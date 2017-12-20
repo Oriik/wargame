@@ -24,7 +24,6 @@ public class Menu extends GridPane {
     public Label currentPlayer;
     public Button endOfTurn;
     public Player current_player;
-    public Button addUnit;
     public Button sauvegarde;
 
     public void setCurrent_player(Player current_player) {
@@ -38,16 +37,10 @@ public class Menu extends GridPane {
         this.sauvegarde = new Button("Save");
         this.labelCurrentPlayer = new Label("En train de jouer : ");
         this.currentPlayer = new Label("");
-        this.addUnit = new Button("Achat Unité");
 
         //Bouton fin de tour
         endOfTurn.setOnAction((ActionEvent e) -> {
             ((Game) this.getParent()).newTurn();
-        });
-
-        //Bouton achat d'une nouvelle unité
-        addUnit.setOnAction((ActionEvent e) -> {
-            current_player.addWarrior();
         });
 
         sauvegarde.setOnAction((ActionEvent e) -> {
@@ -67,7 +60,6 @@ public class Menu extends GridPane {
         this.add(endOfTurn, 0, 0);
         this.add(labelCurrentPlayer, 0, 2);
         this.add(currentPlayer, 1, 2);
-        this.add(addUnit, 0, 4);
         this.add(sauvegarde, 1, 0);
 
     }
