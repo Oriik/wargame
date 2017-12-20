@@ -5,6 +5,7 @@
  */
 package tower;
 
+import java.io.Serializable;
 import java.util.Optional;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
@@ -13,13 +14,14 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import static tower.Constantes.boardHeight;
 import static tower.Constantes.cellWidth;
 
 /**
  *
  * @author Guillaume
  */
- public abstract class Unit extends Rectangle {
+public abstract class Unit extends Rectangle implements Serializable {
 
     public int moveMax;
     public int range;
@@ -28,13 +30,15 @@ import static tower.Constantes.cellWidth;
     public int health;
     public boolean alreadyAttack;
     public String faction;
+    public int position;
+    public String imgPath;
 
     //Constructeur
-    public Unit(int _range, int _moveMax, int _health, int _damage, String _faction, String imgPath) {
+    public Unit(int _range, int _moveMax, int _health, int _damage, String _faction, String _imgPath) {
         super(cellWidth, cellWidth);
-        Image image = new Image(getClass().getResource(_faction + "/" + imgPath).toString());
+        imgPath = _faction + "/" + _imgPath;
+        Image image = new Image(getClass().getResource(_faction + "/" + _imgPath).toString());
         this.setFill(new ImagePattern(image));
-        System.out.println(_faction + "/" + imgPath);
         this.moveMax = _moveMax;
         this.range = _range;
         move = moveMax;
@@ -42,6 +46,11 @@ import static tower.Constantes.cellWidth;
         this.damage = _damage;
         alreadyAttack = false;
         this.faction = _faction;
+    }
+
+    public void setImg() {
+        Image image = new Image(getClass().getResource(imgPath).toString());
+        this.setFill(new ImagePattern(image));
     }
 
     //Réinitialise le nombre de mouvement possible
@@ -54,7 +63,7 @@ import static tower.Constantes.cellWidth;
     public void move(Cell dest) {
 
         //On vérifie si la case destination est occupée
-        if (dest.getChildren().size() > 1) {  
+        if (dest.getChildren().size() > 1) {
             return;
         }
         Cell tempCell = (Cell) this.getParent();
@@ -64,7 +73,11 @@ import static tower.Constantes.cellWidth;
         }
         //On déplace l'unité et on réduit le compteur de mouvement de la distance
         dest.getChildren().add(1, this);
+        int posX = ((int) Math.floor(dest.getLayoutX() / (cellWidth + 1)));
+        int posY = ((int) Math.floor(dest.getLayoutY() / (cellWidth + 1)) * boardHeight);
+        this.position = posX + posY;
         this.move -= (int) distance(tempCell);
+
     }
 
     //Vérifie si la case tempCell est à portée de déplacement de l'unité

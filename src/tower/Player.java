@@ -5,33 +5,33 @@
  */
 package tower;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author Guillaume
  */
-public class Player {
+public class Player implements Serializable {
 
-    Board board;
+    transient Board board;
 
     public String faction;
-    private String name;
-    public int wood;
+    public String name;
     public int gold;
     public int mana;
-    private int score = 0;
-    private ArrayList<Unit> units;
+    public int score = 0;
+    public ArrayList<Unit> units;
     public boolean modeAttack;
 
     //Constructeur
-    public Player(String _name, String _faction) {
+    public Player(String _name, String _faction, Board _board) {
         this.name = _name;
         units = new ArrayList();
         this.faction = _faction;
-        this.wood= 100;
         this.gold = 100;
         this.mana = 0;
+        this.board=_board;
     }
 
     //On augmente le score de la valeur entrée
@@ -41,15 +41,21 @@ public class Player {
 
     //Ajouter un grunt dans la liste des unités du joueur
     public void addWarrior() {
-        units.add(new Warrior(faction));
+        Warrior temp = new Warrior(faction);
+        units.add(temp);
+        board.addUnitOnBoard(temp);
     }
 
     public void addHorseman() {
-        units.add(new Horseman(faction));
+        Horseman temp = new Horseman(faction);
+        units.add(temp);
+        board.addUnitOnBoard(temp);
     }
 
     public void addBowman() {
-        units.add(new Bowman(faction));
+        Bowman temp = new Bowman(faction);
+        units.add(temp);
+        board.addUnitOnBoard(temp);
     }
 
     /* public void addFantassin() {

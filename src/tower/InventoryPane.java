@@ -5,6 +5,7 @@
  */
 package tower;
 
+import java.io.Serializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -23,13 +24,11 @@ public class InventoryPane extends Pane {
         this.getChildren().add(hbox);
     }
 
-    public void refresh(int wood, int gold, int mana) {
+    public void refresh( int gold, int mana) {
         hbox.getChildren().clear();
-        hbox.getChildren().add(new Label("Bois : "));
-        hbox.getChildren().add(new Label(Integer.toString(wood)));
-        hbox.getChildren().add(new Label("|  Or : "));
+        hbox.getChildren().add(new Label("  Or : "));
         hbox.getChildren().add(new Label(Integer.toString(gold)));
-        hbox.getChildren().add(new Label("|  Mana : "));
+        hbox.getChildren().add(new Label(" |  Mana : "));
         hbox.getChildren().add(new Label(Integer.toString(mana)));
         
     }

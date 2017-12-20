@@ -5,8 +5,13 @@
  */
 package tower;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import javafx.event.EventType;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
@@ -35,12 +40,12 @@ public class Game extends BorderPane {
     public void initGame() {
         //On créé les deux joueurs, avec une valeur par défaut pour leurs noms
         players = new ArrayList();
-        Player player1 = new Player("Joueur 1", "human");
-        Player player2 = new Player("Joueur 2", "orc");
+        board = new Board(players);
+        board.initialize();  
+        Player player1 = new Player("Joueur 1", "human", board);
+        Player player2 = new Player("Joueur 2", "orc",board);
         players.add(player1);
         players.add(player2);
-        board = new Board(players);
-        board.initialize();
         menu = new Menu();
         menu.initMenu();
 
@@ -69,7 +74,7 @@ public class Game extends BorderPane {
     public void newTurn() {
         board.newTurn();
         menu.newTurn(board.getCurrent_player());
-        inventory.refresh(board.getCurrent_player().wood, board.getCurrent_player().gold, board.getCurrent_player().mana);
+        inventory.refresh(board.getCurrent_player().gold, board.getCurrent_player().mana);
         //On "centre" la grille sur une unité du joueur
         focusCameraOnUnit(board.getCurrent_player().getUnits().get(0));
 
@@ -93,12 +98,6 @@ public class Game extends BorderPane {
         players.get(1).addHorseman();
         ((Cell) board.getChildren().get(0)).getChildren().add(new Castle("human"));
         ((Cell) board.getChildren().get(boardWidth * boardHeight - 1)).getChildren().add(new Castle("orc"));
-        board.addUnitOnBoard(players.get(0).getUnits().get(0));
-        board.addUnitOnBoard(players.get(1).getUnits().get(0));
-        board.addUnitOnBoard(players.get(0).getUnits().get(1));
-        board.addUnitOnBoard(players.get(1).getUnits().get(1));
-        board.addUnitOnBoard(players.get(0).getUnits().get(2));
-        board.addUnitOnBoard(players.get(1).getUnits().get(2));
 
         newTurn();
     }
@@ -107,4 +106,43 @@ public class Game extends BorderPane {
         board.addUnitOnBoard(unit);
     }
 
+    void addUnitOnBoard(Unit unit, int position) {
+        board.addUnitOnBoard(unit, position);
+    }
+
+    public void sauvegardeBDD(String path) throws FileNotFoundException, IOException {
+
+        FileOutputStream w = new FileOutputStream(path);
+        ObjectOutputStream o = new ObjectOutputStream(w);
+        o.writeObject(this.board.players);
+        o.close();
+        w.close();
+
+    }
+
+    public static ArrayList<Player> lectureBDD(String path) throws FileNotFoundException, IOException, ClassNotFoundException {
+        FileInputStream r = new FileInputStream(path);
+        ObjectInputStream o = new ObjectInputStream(r);
+        Object lu = o.readObject();
+        ArrayList<Player> players = (ArrayList<Player>) lu;
+        o.close();
+        r.close();
+        return players;
+    }
+
+    void loadGame() {
+        ((Cell) board.getChildren().get(0)).getChildren().add(new Castle("human"));
+        ((Cell) board.getChildren().get(boardWidth * boardHeight - 1)).getChildren().add(new Castle("orc"));
+
+        players = board.players;
+        for (Player p : board.players) {
+            for (Unit u : p.getUnits()) {
+                u.setWidth(cellWidth);
+                u.setHeight(cellWidth);
+                u.setImg();
+                board.addUnitOnBoard(u, u.position);
+            }
+        }
+        newTurn();
+    }
 }

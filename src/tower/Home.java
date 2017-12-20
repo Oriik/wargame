@@ -5,12 +5,9 @@
  */
 package tower;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -25,6 +22,7 @@ import javafx.scene.layout.VBox;
 public class Home extends BorderPane {
 
     public Button btnStart;
+    public Button loadGame;
     private final Label labelPlayer1;
     public TextField player1Name;
     private final Label labelPlayer2;
@@ -36,8 +34,8 @@ public class Home extends BorderPane {
     //Que de l'affichage, rien d'intéressant
     public Home() {
         title = new Label("----------- TOWER -----------");
-        btnStart = new Button("START");
-        btnStart.prefWidth(200);
+        btnStart = new Button("Nouvelle Partie");
+        loadGame = new Button("Charger Partie");
         labelPlayer1 = new Label("Humain - Joueur 1 : ");
         labelPlayer2 = new Label("Orc - Joueur 2 : ");
         player1Name = new TextField("Joueur1");
@@ -48,6 +46,7 @@ public class Home extends BorderPane {
         
 
         HBox hboxStart = createHBox(btnStart);
+        hboxStart.getChildren().add(loadGame);
         HBox hboxTitle = createHBox(title);
                 
         VBox vboxPlayer1 = createPlayerVbox(labelPlayer1,player1Name);       

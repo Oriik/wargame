@@ -5,8 +5,8 @@
  */
 package tower;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Random;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -23,9 +23,10 @@ import static tower.Constantes.cellWidth;
  */
 public class Board extends GridPane {
 
-    private final ArrayList<Player> players; //Liste des joueurs
+    public  ArrayList<Player> players; //Liste des joueurs
     private Player current_player; //Joueur en train de joueur
-    private int playerCpt; //Compteur utiliser pour changer de joueur à la fin du tour
+    private int playerCpt;//Compteur utiliser pour changer de joueur à la fin du tour
+    private Unit current_unit;
 
     //Constructeur
     public Board(ArrayList<Player> _players) {
@@ -42,7 +43,6 @@ public class Board extends GridPane {
         ///On créé un tableau de X x Y case (Cell)
         for (int x = 0; x < boardWidth; x++) {
             for (int y = 0; y < boardHeight; y++) {
-
                 Cell cell = new Cell(this);
                 cell.initCell();
                 this.add(cell, y, x);
@@ -102,12 +102,27 @@ public class Board extends GridPane {
 
     //Permet d'afficher une unité sur le plateau de jeu (position random pour l'instant)
     public void addUnitOnBoard(Unit unit) {
-        Random r = new Random();
+        int i;
         Cell temp;
-        do {
-            temp = (Cell) this.getChildren().get(r.nextInt(boardHeight * boardWidth));
-        } while (temp.getChildren().size() > 1);
+        if (unit.faction.compareTo("human") == 0) {
+            i = 0;
+            do {
+                temp = (Cell) this.getChildren().get(i++);
+            } while (temp.getChildren().size() > 1);
+        } else {
+            i = boardHeight * boardWidth - 1;
+            do {
+                temp = (Cell) this.getChildren().get(i--);
+            } while (temp.getChildren().size() > 1);
+        }
         temp.getChildren().add(unit);
+        int posX = ((int) Math.floor(temp.getLayoutX() / (cellWidth + 1)));
+        int posY = ((int) Math.floor(temp.getLayoutY() / (cellWidth + 1)) * boardHeight);
+        unit.position =posX+posY;
+    }
+     public void addUnitOnBoard(Unit unit, int position) {
+    
+         ((Cell)this.getChildren().get(position)).getChildren().add(unit);
     }
 
     //Décolore toutes les cases (après le déplacement d'un joueur notamment)
@@ -128,7 +143,6 @@ public class Board extends GridPane {
     public void setCurrent_unit(Unit current_unit) {
         this.current_unit = current_unit;
     }
-    private Unit current_unit;
 
     public Player getCurrent_player() {
         return current_player;

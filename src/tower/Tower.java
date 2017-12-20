@@ -5,10 +5,18 @@
  */
 package tower;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Screen;
@@ -35,6 +43,23 @@ public class Tower extends Application {
         home = new Home();
         home.btnStart.setOnAction((ActionEvent event) -> {
             startGame();
+        });
+        home.loadGame.setOnAction((ActionEvent event) -> {
+            try {
+                game.board.players = Game.lectureBDD("test.txt");
+            } catch (Exception ex) {
+               Alert alert = new Alert(Alert.AlertType.WARNING);
+                            alert.setTitle("Erreur ! ");
+                            alert.setHeaderText("Impossible de charger la partie");
+                            alert.setContentText("Merci de commencer une nouvelle partie");
+
+                            Optional<ButtonType> result = alert.showAndWait();
+                            if (result.get() == ButtonType.OK) {
+                                Platform.exit();
+                            }
+            }
+            loadGame();
+
         });
         Scene scene = new Scene(home, screenSize.getWidth(), screenSize.getHeight());
         stage.setTitle("Tower");
@@ -63,6 +88,17 @@ public class Tower extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+    }
+
+    private void loadGame() {
+        game.loadGame();
+        Scene sceneGame = new Scene(game, screenSize.getWidth(), screenSize.getHeight());
+        sceneGame.setOnKeyPressed((KeyEvent event) -> {
+            if (event.getCode() == KeyCode.A) {
+                game.board.getCurrent_player().modeAttack = !game.board.getCurrent_player().modeAttack;
+            }
+        });
+        stage.setScene(sceneGame);
     }
 
 }

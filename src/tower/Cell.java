@@ -5,6 +5,7 @@
  */
 package tower;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Optional;
@@ -27,7 +28,7 @@ import javafx.scene.shape.Rectangle;
  *
  * @author Guillaume
  */
-public class Cell extends StackPane {
+public class Cell extends StackPane implements Serializable {
 
     public Board board;
     public static ArrayList<Cell> temp = new ArrayList();
