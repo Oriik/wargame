@@ -27,7 +27,8 @@ public class Tower extends Application {
     private Game game;
     private Home home;
     private Stage stage;
-    Rectangle2D screenSize;
+    private Rectangle2D screenSize;
+    private Save save;
 
     @Override
     public void start(Stage primaryStage) {
@@ -42,7 +43,7 @@ public class Tower extends Application {
         });
         home.loadGame.setOnAction((ActionEvent event) -> {
             try {
-                game.board.players = Game.lectureBDD("test.txt");
+                save = Game.lectureBDD("test.txt");
             } catch (Exception ex) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Erreur ! ");
@@ -51,7 +52,6 @@ public class Tower extends Application {
 
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
-                    Platform.exit();
                     return;
                 }
             }
@@ -88,7 +88,7 @@ public class Tower extends Application {
     }
 
     private void loadGame() {
-        game.loadGame();
+        game.loadGame(save);
         Scene sceneGame = new Scene(game, screenSize.getWidth(), screenSize.getHeight());
         sceneGame.setOnKeyPressed((KeyEvent event) -> {
             if (event.getCode() == KeyCode.A) {

@@ -27,10 +27,12 @@ public class Board extends GridPane {
     private Player current_player; //Joueur en train de joueur
     private int playerCpt;//Compteur utiliser pour changer de joueur à la fin du tour
     private Unit current_unit;
+    public ArrayList<Resource> resources;
 
     //Constructeur
     public Board(ArrayList<Player> _players) {
         this.players = _players;
+        this.resources = new ArrayList();
         playerCpt = 0;
     }
 
@@ -91,10 +93,15 @@ public class Board extends GridPane {
         Random random = new Random();
         for (int i = 0; i < boardWidth / 2; i++) {
             Cell temp;
+            int pos;
             do {
-                temp = (Cell) this.getChildren().get(random.nextInt(boardWidth * boardHeight));
+                pos=random.nextInt(boardWidth * boardHeight);
+                temp = (Cell) this.getChildren().get(pos);
             } while (temp.getChildren().size() > 1);
-            temp.getChildren().add(new Mine());
+            Mine mine = new Mine();
+            mine.position=pos;
+            addResourceOnBoard(mine, pos);
+            resources.add(mine);
         }
     }
 
@@ -138,6 +145,9 @@ public class Board extends GridPane {
     public void addUnitOnBoard(Unit unit, int position) {
 
         ((Cell) this.getChildren().get(position)).getChildren().add(unit);
+    }
+    public void addResourceOnBoard(Resource resource, int position){
+        ((Cell) this.getChildren().get(position)).getChildren().add(resource);
     }
 
     public void addCastleOnBoard(Castle castle) {

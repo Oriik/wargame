@@ -42,7 +42,6 @@ public class Game extends BorderPane {
         players = new ArrayList();
         board = new Board(players);
         board.initialize();
-        board.initResources();
         Player player1 = new Player("Joueur 1", "human", board);
         Player player2 = new Player("Joueur 2", "orc", board);
         players.add(player1);
@@ -99,6 +98,7 @@ public class Game extends BorderPane {
         players.get(1).addHorseman();
         players.get(0).addCastle();
         players.get(1).addCastle();
+        board.initResources();
         newTurn();
     }
 
@@ -114,25 +114,28 @@ public class Game extends BorderPane {
 
         FileOutputStream w = new FileOutputStream(path);
         ObjectOutputStream o = new ObjectOutputStream(w);
-        o.writeObject(this.board.players);
+        Save save = new Save(this.board.players, this.board.resources);
+        o.writeObject(save);
         o.close();
         w.close();
 
     }
 
-    public static ArrayList<Player> lectureBDD(String path) throws FileNotFoundException, IOException, ClassNotFoundException {
+    public static Save lectureBDD(String path) throws FileNotFoundException, IOException, ClassNotFoundException {
         FileInputStream r = new FileInputStream(path);
         ObjectInputStream o = new ObjectInputStream(r);
         Object lu = o.readObject();
-        ArrayList<Player> players = (ArrayList<Player>) lu;
+        Save save = (Save) lu;
         o.close();
         r.close();
-        return players;
+        return save;
     }
 
-    void loadGame() {
+    void loadGame(Save save) {
 
-        players = board.players;
+        players = save.players;
+        board.players = save.players;
+        board.resources = save.resources;
         for (Player p : board.players) {
             for (Unit u : p.getUnits()) {
                 u.setWidth(cellWidth);
@@ -147,6 +150,14 @@ public class Game extends BorderPane {
                 board.addUnitOnBoard(b, b.position);
             }
         }
+        System.out.println(board.resources);
+        for (Resource r : board.resources) {
+            r.setWidth(cellWidth);
+            r.setHeight(cellWidth);
+            r.setImg();
+            board.addResourceOnBoard(r, r.position);
+        }
+        System.out.println(board.resources);
         newTurn();
     }
 }

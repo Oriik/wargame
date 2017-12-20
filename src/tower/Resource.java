@@ -44,4 +44,9 @@ public abstract class Resource extends Rectangle implements Serializable {
 
     }
 
+    void setImg() {
+        Image image = new Image(getClass().getResource(imgPath).toString());
+        this.setFill(new ImagePattern(image));
+    }
+
 }
