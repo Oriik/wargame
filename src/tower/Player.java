@@ -41,7 +41,7 @@ public class Player implements Serializable {
         buildings = new ArrayList();
         this.faction = _faction;
         this.gold = 100;
-        this.mana = 1000;
+        this.mana = 0;
         this.board = _board;
         this.waiting = new ArrayList();
         this.alreadyDropMana=false;
